@@ -1,24 +1,187 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-    <link href="styles/style.css" rel="stylesheet" type="text/css">
-    <title>My test page</title>
-</head>
+  <meta charset="utf-8">
 
+  <title>Cocos Creator 3D | demo-ball</title>
+
+  <!--http://www.html5rocks.com/en/mobile/mobifying/-->
+  <meta name="viewport"
+        content="width=device-width,user-scalable=no,initial-scale=1, minimum-scale=1,maximum-scale=1"/>
+
+  <!--https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- force webkit on 360 -->
+  <meta name="renderer" content="webkit"/>
+  <meta name="force-rendering" content="webkit"/>
+  <!-- force edge on IE -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <!-- force full screen on some browser -->
+  <meta name="full-screen" content="yes"/>
+  <meta name="x5-fullscreen" content="true"/>
+  <meta name="360-fullscreen" content="true"/>
+  
+  <!-- force screen orientation on some browser -->
+  <meta name="screen-orientation" content="auto"/>
+  <meta name="x5-orientation" content="auto">
+
+  <!--fix fireball/issues/3568 -->
+  <!--<meta name="browsermode" content="application">-->
+  <meta name="x5-page-mode" content="app">
+
+  <!--<link rel="apple-touch-icon" href=".png" />-->
+  <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
+
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+
+</head>
 <body>
-    <h1>Mozilla is cool</h1>
-    <img src="./images/firefox-icon.png" alt="Firefox  Logo：有一隻狐狸繞著地球">
-    <p>At Mozilla, we’re a global community of</p>
-    <ul>
-        <li>technologists</li>
-        <li>thinkers</li>
-        <li>builders</li>
-    </ul>
-    <p>working together to keep the Internet alive and accessible, so people worldwide can be informed contributors and creators of the Web. We believe this act of human collaboration across an open platform is essential to individual growth and our collective future.</p>
-    <p>Read the <a href="https://www.mozilla.org/zh-TW/about/manifesto/">Mozilla Manifesto</a> to learn even more about the values and principles that guide the pursuit of our mission.</p>
-    <button>Change user</button>
-    <script src="scritps/main.js"></script>
+  <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
+  <div class="progress-bar stripes">
+    <span style="width: 0%"></span>
+  </div>
+  <!-- Polyfills bundle. -->
+<script src="src/polyfills.bundle.js" charset="utf-8"> </script>
+
+<!-- SystemJS support. -->
+<script src="src/system.bundle.js" charset="utf-8"> </script>
+
+
+
+<!-- Manifest file. -->
+<script src="src/settings.js" charset="utf-8"></script>
+
+<!-- Contains window.boot() which bootstrap the logic. -->
+<script src="main.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+  (function () {
+    
+
+    var boot = window.boot;
+
+    boot.prepare.engine = function() {
+        var importMap = { imports: { }, };
+        importMap.imports['cc'] = './cocos3d-js.min.js';
+        const importMapElement = document.createElement('script');
+        importMapElement.type = 'systemjs-importmap';
+        importMapElement.text = JSON.stringify(importMap, undefined, 2);
+        document.body.appendChild(importMapElement);
+    };
+
+    boot.prepare.loadIIFE = function (url) {
+        return new Promise(function (resolve, reject) {
+            var err;
+
+            function windowErrorListener(evt) {
+                if (evt.filename === url) {
+                    err = evt.error;
+                }
+            }
+
+            window.addEventListener('error', windowErrorListener);
+
+            var script = document.createElement('script');
+            script.charset = 'utf-8';
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.addEventListener('error', function () {
+                window.removeEventListener('error', windowErrorListener);
+                reject(Error('Error loading ' + url));
+            });
+            script.addEventListener('load', function () {
+                window.removeEventListener('error', windowErrorListener);
+                document.head.removeChild(script);
+                // Note that if an error occurs that isn't caught by this if statement,
+                // that getRegister will return null and a "did not instantiate" error will be thrown.
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve();
+                }
+            });
+            script.src = url;
+            document.head.appendChild(script);
+        });
+    };
+
+    boot.prepare.findCanvas = function (id) {
+        var localCanvas;
+        var localContainer;
+
+        var frame;
+        var canvas;
+        var container;
+
+        const el = id;
+        var width;
+        var height;
+        const element = !el ? null : ((el instanceof HTMLElement) ? el : (document.querySelector(el) || document.querySelector('#' + el)));
+        if (!element) {
+            console.error("unknown canvas id:", el);
+        }
+
+        if (element.tagName === 'CANVAS') {
+            width = element.width;
+            height = element.height;
+
+            // it is already a canvas, we wrap it around with a div
+            canvas = localCanvas = element;
+            container = localContainer = document.createElement('div');
+            if (localCanvas && localCanvas.parentNode) {
+                localCanvas.parentNode.insertBefore(localContainer, localCanvas);
+            }
+        } else {
+            // we must make a new canvas and place into this element
+            if (element.tagName !== 'DIV') {
+                debug.warnID(3819);
+            }
+            width = element.clientWidth;
+            height = element.clientHeight;
+
+            canvas = localCanvas = document.createElement('canvas');
+            container = localContainer = document.createElement('div');
+            element.appendChild(localContainer);
+        }
+        localContainer.setAttribute('id', 'Cocos3dGameContainer');
+        localContainer.appendChild(localCanvas);
+        frame = (localContainer.parentNode === document.body) ? document.documentElement : localContainer.parentNode;
+
+        addClass(localCanvas, 'gameCanvas');
+        localCanvas.setAttribute('width', width || '480');
+        localCanvas.setAttribute('height', height || '320');
+        localCanvas.setAttribute('tabindex', '99');
+
+        return { frame, canvas, container };
+    };
+
+    /**
+     * for findCanvas
+     */
+    function addClass (element, name) {
+        const hasClass = (' ' + element.className + ' ').indexOf(' ' + name + ' ') > -1;
+        if (!hasClass) {
+            if (element.className) {
+                element.className += ' ';
+            }
+            element.className += name;
+        }
+    };
+
+    const canv = document.getElementById('GameCanvas');
+    const $p = canv.parentElement;
+    const bcr = $p.getBoundingClientRect();
+    canv.width = bcr.width;
+    canv.height = bcr.height;
+
+    boot.prepare().then(boot);
+  })();
+</script>
+
 </body>
 </html>

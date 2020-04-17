@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Pictures</title>
+    <link rel="stylesheet" href="styles/pictureStyle.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- put navigation menu just below here -->
+    <ul>
+        <li><a href="/index.html">Home</a></li>
+        <li>Pictures</li>
+        <li><a href="/projects.html">Projects</a></li>
+        <li><a href="/social.html">Social</a></li>
+    </ul>
+    <h1>Pictures</h1>
+
+    <form>
+        <label>解決chrome中點選input的bug的方案</label>
+        <input id="testLimit" placeholder="限制輸入字元" ,data-max="10">
+        <input id="exception" placeholder="exception">
+        <input id="money" name="money" placeholder="萬元">
+        <input id="testChinese" placeholder="測試輸入中文">
+    </form>
+    <p>My pictures will go here, when I start taking some.</p>
+    <script>
+        var tab = false;
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode == 9) {
+                tab = true;
+            }
+        });
+        document.getElementById('exception').addEventListener('focus', function() {
+            tab = false;
+        });
+        document.getElementById('money').addEventListener('click', function() {
+            tab = true;
+            this.focus();
+        });
+
+        document.getElementById('money').addEventListener('focus', function() {
+            if (tab) {
+                var val = this.value,
+                    len = val.length;
+                if (val.indexOf('萬元') !== -1) {
+                    pos = len - 2;
+                    setTimeout(function() {
+                        changeCursorPos('money', pos);
+                    }, 0);
+                } else {
+                    $(this).val(val + '萬元');
+                    pos = len;
+                    setTimeout(function() {
+                        changeCursorPos('money', pos);
+                    }, 0);
+                }
+            } else {
+                this.blur();
+            }
+            tab = false;
+        });
+        let flag = true; //設定全局變量在輸入中文過程中不執行賦值操作
+        $("#testLimit")
+            .on("input", function(e) {
+                setMaxlen(this);
+            })
+            .on("compositionupdate", function() {
+                flag = false;
+            })
+            .on("compositionend", function() {
+                flag = true;
+                setMaxlen(this);
+            });
+        function getCursortPosition(obj) {
+            var cursorIndex = 0;
+            if (document.selection) {
+                // IE Support
+                obj.focus();
+                var range = document.selection.createRange();
+                range.moveStart("character", -obj.value.length);
+                cursorIndex = range.text.length;
+            } else if (obj.selectionStart || obj.selectionStart == 0) {
+                // another support
+                cursorIndex = obj.selectionStart;
+            }
+            return cursorIndex;
+        }
+
+        function setMaxlen(el) {
+            let val = $(el).val(), //獲取value
+                maxLen = 10, //獲取限制輸入的最大值
+                len = val.replace(/[^\x00-\xff]/g, "**").length, //獲取input長度
+                startLen = getCursortPosition(el), //獲取光標位置
+                endLen = val.substring(startLen).replace(/[^\x00-\xff]/g, "**").length; //光標後面有幾個字符(計算後的)
+            console.log("max len::::", $(el).data("max"));
+            if (flag && len > maxLen) {
+                let num = maxLen - endLen, //求出光標前面剩餘的字符長度
+                    str = val.substring(0, maxLen - endLen); //截取長度
+                while (str.replace(/[^\x00-\xff]/g, "**").length > num) { //因涉及中文,循環截取
+                    if (str.length === 0) {
+                        str = "";
+                        break;
+                    }
+                    str = str.substring(0, str.length - 1);
+                }
+                $(el).val(str + val.substring(startLen)); //設置value
+                //設置完value後需要重新設置下光標的位置。
+                let newStrLen = $(el).val().length, //獲取設置完value後的長度
+                    setEnd = val.substring(startLen).length; //獲取原input光標後有幾個字符
+                el.setSelectionRange(newStrLen - setEnd, newStrLen - setEnd); //設置光標位置
+            }
+        }
+
+        // 獲取字串的位元組長度
+        function len(s) {
+            s = String(s);
+            return s.length + (s.match(/[^\x00-\xff]/g) || "").length; // 加上匹配到的全形字元長度
+        }
+
+        function limit(obj, limit) {
+            let val = obj.value;
+            if (len(val) > limit) {
+                val = val.substring(0, limit);
+                while (len(val) > limit) {
+                    val = val.substring(0, val.length - 1);
+                };
+                obj.value = val;
+            }
+        }
+
+        function changeCursorPos(inputId, pos) {
+            var inpObj = document.getElementById(inputId);
+            if (inpObj.setSelectionRange) {
+                inpObj.setSelectionRange(pos, pos);
+            } else {
+                console.log('不相容該方法');
+            }
+        }
+    </script>
+</body></html>
