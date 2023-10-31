@@ -1,0 +1,139 @@
+
+GoldMahjong.png
+size: 1372,286
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+2bamboo
+  rotate: true
+  xy: 2, 2
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+2dots
+  rotate: true
+  xy: 148, 2
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+3dots
+  rotate: true
+  xy: 294, 2
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+5bamboo
+  rotate: true
+  xy: 440, 2
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+5dots
+  rotate: true
+  xy: 586, 2
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+8W
+  rotate: true
+  xy: 732, 2
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+Mahjong_01
+  rotate: false
+  xy: 2, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+Mahjong_02
+  rotate: false
+  xy: 139, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+Mahjong_03
+  rotate: false
+  xy: 276, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+Mahjong_04
+  rotate: false
+  xy: 413, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+Mahjong_05
+  rotate: false
+  xy: 550, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+Mahjong_06
+  rotate: false
+  xy: 687, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+Mahjong_07
+  rotate: false
+  xy: 824, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+Mahjong_08
+  rotate: false
+  xy: 961, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+Mahjong_09
+  rotate: false
+  xy: 1098, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+Mahjong_10
+  rotate: false
+  xy: 1235, 132
+  size: 135, 152
+  orig: 135, 152
+  offset: 0, 0
+  index: -1
+green
+  rotate: true
+  xy: 878, 2
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+red
+  rotate: true
+  xy: 1024, 2
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+white
+  rotate: true
+  xy: 1170, 2
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1

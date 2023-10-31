@@ -1,0 +1,53 @@
+#mask {
+    position: absolute;
+    z-index: 9999;
+    background-color: #000000;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    display: none;
+    opacity: 0.7;
+}
+
+#tip {
+    background-repeat: no-repeat;
+    background-position: 50% 50px;
+    background-image: url('gesture.gif?v1.0');
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+
+body{
+    background: black;
+}
+
+.progress-bar {
+    height: 6px;
+    background-color: #5c5c5c;
+    box-shadow: 0 1px 3px #000 inset, 0 1px 0 #444;
+    top: 70%;
+    padding: 0;
+}
+
+.progress-bar span {
+    background-color: #fff0a0;
+}
+
+#loading {
+    height: 100vh;
+}
+
+#splash {
+    background-color: #000000;
+    background-image: none;
+    background-position: center;
+    background-size: contain;
+}
+
+
+
+.progress-bar{
+    display: none !important;
+}

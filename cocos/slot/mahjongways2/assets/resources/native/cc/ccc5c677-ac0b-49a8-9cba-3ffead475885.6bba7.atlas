@@ -1,0 +1,167 @@
+
+logo_loading.png
+size: 1396,387
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+88lig_00
+  rotate: false
+  xy: 723, 256
+  size: 324, 129
+  orig: 329, 135
+  offset: 1, 4
+  index: -1
+alllig
+  rotate: true
+  xy: 1279, 185
+  size: 200, 28
+  orig: 200, 30
+  offset: 0, 1
+  index: -1
+big_shine
+  rotate: true
+  xy: 1049, 161
+  size: 224, 228
+  orig: 237, 238
+  offset: 6, 5
+  index: -1
+chip_01
+  rotate: false
+  xy: 1131, 50
+  size: 106, 109
+  orig: 108, 112
+  offset: 1, 2
+  index: -1
+chip_02
+  rotate: true
+  xy: 1309, 261
+  size: 124, 84
+  orig: 126, 87
+  offset: 1, 2
+  index: -1
+chip_03
+  rotate: false
+  xy: 831, 5
+  size: 119, 57
+  orig: 121, 60
+  offset: 1, 1
+  index: -1
+coin_l1
+  rotate: false
+  xy: 723, 200
+  size: 63, 54
+  orig: 65, 56
+  offset: 1, 1
+  index: -1
+coin_r1
+  rotate: false
+  xy: 952, 16
+  size: 49, 46
+  orig: 51, 49
+  offset: 1, 2
+  index: -1
+coin_r2
+  rotate: false
+  xy: 788, 215
+  size: 41, 39
+  orig: 43, 41
+  offset: 1, 1
+  index: -1
+lig_01
+  rotate: false
+  xy: 1007, 221
+  size: 34, 33
+  orig: 37, 35
+  offset: 1, 1
+  index: -1
+lig_02
+  rotate: false
+  xy: 1279, 167
+  size: 15, 16
+  orig: 17, 18
+  offset: 1, 1
+  index: -1
+lig_03
+  rotate: false
+  xy: 1007, 185
+  size: 33, 34
+  orig: 37, 36
+  offset: 2, 1
+  index: -1
+lig_04
+  rotate: false
+  xy: 1007, 167
+  size: 15, 16
+  orig: 17, 18
+  offset: 1, 1
+  index: -1
+light
+  rotate: true
+  xy: 1007, 39
+  size: 120, 122
+  orig: 128, 128
+  offset: 3, 3
+  index: -1
+logo
+  rotate: false
+  xy: 2, 2
+  size: 462, 192
+  orig: 467, 198
+  offset: 2, 3
+  index: -1
+poker_10
+  rotate: true
+  xy: 658, 4
+  size: 190, 171
+  orig: 196, 177
+  offset: 3, 3
+  index: -1
+poker_a
+  rotate: false
+  xy: 831, 64
+  size: 174, 190
+  orig: 180, 198
+  offset: 3, 4
+  index: -1
+poker_k
+  rotate: false
+  xy: 466, 6
+  size: 190, 188
+  orig: 197, 195
+  offset: 3, 4
+  index: -1
+ribon
+  rotate: false
+  xy: 2, 196
+  size: 719, 189
+  orig: 719, 189
+  offset: 0, 0
+  index: -1
+shine_l1
+  rotate: false
+  xy: 1309, 188
+  size: 73, 71
+  orig: 75, 74
+  offset: 1, 2
+  index: -1
+shine_r1
+  rotate: true
+  xy: 1330, 119
+  size: 67, 64
+  orig: 73, 69
+  offset: 3, 2
+  index: -1
+shine_r2
+  rotate: false
+  xy: 1330, 72
+  size: 49, 45
+  orig: 51, 48
+  offset: 1, 2
+  index: -1
+word_lig
+  rotate: true
+  xy: 1239, 66
+  size: 93, 89
+  orig: 100, 95
+  offset: 3, 3
+  index: -1

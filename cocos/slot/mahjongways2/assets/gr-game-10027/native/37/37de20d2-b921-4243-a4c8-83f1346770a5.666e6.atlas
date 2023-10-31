@@ -1,0 +1,41 @@
+
+select.png
+size: 146,245
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1
+  rotate: false
+  xy: 2, 173
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 74, 173
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 2, 101
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 74, 101
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+select
+  rotate: true
+  xy: 2, 2
+  size: 97, 100
+  orig: 97, 100
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,104 @@
+
+HU.png
+size: 377,852
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+C
+  rotate: false
+  xy: 216, 2
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+CL
+  rotate: true
+  xy: 148, 102
+  size: 73, 66
+  orig: 73, 66
+  offset: 0, 0
+  index: -1
+D
+  rotate: true
+  xy: 2, 661
+  size: 189, 238
+  orig: 189, 238
+  offset: 0, 0
+  index: -1
+M
+  rotate: false
+  xy: 221, 389
+  size: 150, 169
+  orig: 150, 169
+  offset: 0, 0
+  index: -1
+O1
+  rotate: true
+  xy: 2, 48
+  size: 95, 105
+  orig: 95, 105
+  offset: 0, 0
+  index: -1
+Spot
+  rotate: true
+  xy: 148, 177
+  size: 96, 66
+  orig: 96, 66
+  offset: 0, 0
+  index: -1
+W
+  rotate: false
+  xy: 242, 706
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+W2
+  rotate: false
+  xy: 242, 560
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+bottom
+  rotate: true
+  xy: 2, 145
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+bottomside
+  rotate: true
+  xy: 216, 104
+  size: 128, 144
+  orig: 128, 144
+  offset: 0, 0
+  index: -1
+light01
+  rotate: true
+  xy: 2, 468
+  size: 191, 217
+  orig: 191, 217
+  offset: 0, 0
+  index: -1
+light02
+  rotate: true
+  xy: 2, 275
+  size: 191, 217
+  orig: 191, 217
+  offset: 0, 0
+  index: -1
+light_C
+  rotate: false
+  xy: 221, 234
+  size: 153, 153
+  orig: 153, 153
+  offset: 0, 0
+  index: -1
+line
+  rotate: true
+  xy: 372, 621
+  size: 229, 3
+  orig: 229, 3
+  offset: 0, 0
+  index: -1
