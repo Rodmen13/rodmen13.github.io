@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>Cocos Creator | cocos-load-spine</title>
+
+  <!--http://www.html5rocks.com/en/mobile/mobifying/-->
+  <meta name="viewport"
+        content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1,minimal-ui=true"/>
+
+  <!--https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- force webkit on 360 -->
+  <meta name="renderer" content="webkit"/>
+  <meta name="force-rendering" content="webkit"/>
+  <!-- force edge on IE -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <!-- force full screen on some browser -->
+  <meta name="full-screen" content="yes"/>
+  <meta name="x5-fullscreen" content="true"/>
+  <meta name="360-fullscreen" content="true"/>
+
+  <!--fix fireball/issues/3568 -->
+  <!--<meta name="browsermode" content="application">-->
+  <meta name="x5-page-mode" content="app">
+
+  <!--<link rel="apple-touch-icon" href=".png" />-->
+  <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
+
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+
+</head>
+<body>
+  <div style="position:absolute; bottom:10%; left:30%; z-index:9999; background:rgba(0,0,0,0.7);
+  color:#fff; padding:10px; border-radius:5px;">
+    <h4>Spine 動畫預覽器</h4>
+    <input id="spineFileInput" type="file" accept=".json,.atlas,.png,.webp,.jpg" multiple style="margin-bottom:8px;font-size:24px" />
+    <div>
+      <label for="animationSelect" style="font-size: 24px;">選擇動畫：</label>
+      <select id="animationSelect" onchange="onAnimChange(event)"></select>
+    </div>
+  </div>
+   <script>
+        // 等待 Cocos 初始化完成後綁定事件
+        window.addEventListener('DOMContentLoaded', function() {
+            const input = document.getElementById('spineFileInput');
+            input.addEventListener('change', function(e) {
+                const files = Array.from((e.target).files || []);
+                if (files.length > 0 && window.ccSpineLoader) {
+                    window.ccSpineLoader.loadSpineFromFiles(files);
+                }
+            });
+        });
+
+        // 更新動畫下拉選
+        function updateAnimationSelector(animationList) {
+          const select = document.getElementById('animationSelect');
+          select.style.fontSize='24px';
+          select.innerHTML = '';
+          while (select.lastChild) {
+            select.removeChild(select.lastChild);
+        }
+          animationList.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            option.style.fontSize = '20px';
+            select.appendChild(option);
+          });
+        }
+        function onAnimChange(e) {
+          const animName = e.target.value;
+          if (window.ccSpineLoader) {
+            window.ccSpineLoader.playAnimation(animName);
+          }
+        }
+
+        function clearSpine() {
+            if (window.ccSpineLoader) {
+                // 清空動畫
+                const spineNode = document.querySelector('canvas')?.getContext('2d');
+                // 或透過 Cocos API 清空
+            }
+            document.getElementById('spineFileInput').value = '';
+        }
+        // 讓 Cocos 腳本能呼叫此方法更新動畫列表
+        window.updateAnimationSelector = updateAnimationSelector;
+    </script>
+
+  <div id="GameDiv" cc_exact_fit_screen="true">
+      <div id="Cocos3dGameContainer">
+        <canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="99"></canvas>
+      </div>
+    </div>
+  
+<!-- Polyfills bundle. -->
+<script src="src/polyfills.bundle.js" charset="utf-8"> </script>
+
+<!-- SystemJS support. -->
+<script src="src/system.bundle.js" charset="utf-8"> </script>
+
+<!-- Import map -->
+<script src="src/import-map.json" type="systemjs-importmap" charset="utf-8"> </script>
+
+<script>
+    System.import('./index.js').catch(function(err) { console.error(err); })
+</script>
+
+</body>
+</html>
