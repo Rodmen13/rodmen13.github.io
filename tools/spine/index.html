@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Spine Atlas 提取器</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: #f4f4f9; margin: 0; }
+        #drop-zone {
+            width: 80%; max-width: 600px; height: 200px; border: 3px dashed #aaa; border-radius: 20px;
+            display: flex; align-items: center; justify-content: center; color: #777; transition: 0.3s; background: white; cursor: pointer;
+        }
+        #drop-zone.hover { border-color: #4CAF50; background: #e8f5e9; color: #2e7d32; }
+        .info { margin-top: 20px; text-align: center; color: #555; }
+        .download-list { margin-top: 20px; display: flex; gap: 10px; }
+        .btn { padding: 10px 20px; background: #4CAF50; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; }
+        .btn:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+
+    <h2>🧬 Spine 資源提取工具</h2>
+    <div id="drop-zone">請將 Cocos JSON 檔案拖曳至此處</div>
+    
+    <div class="info" id="status">等待檔案上傳...</div>
+    <div class="download-list" id="download-links"></div>
+
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+        const status = document.getElementById('status');
+        const downloadLinks = document.getElementById('download-links');
+
+        // 阻止瀏覽器預設行為（避免直接打開檔案）
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(name => {
+            dropZone.addEventListener(name, (e) => e.preventDefault());
+        });
+
+        // 拖曳狀態樣式
+        dropZone.addEventListener('dragover', () => dropZone.classList.add('hover'));
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('hover'));
+
+        // 處理檔案放置
+        dropZone.addEventListener('drop', (e) => {
+            dropZone.classList.remove('hover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === "application/json" || file.name.endsWith('.json')) {
+                processFile(file);
+            } else {
+                status.innerText = "❌ 格式錯誤，請上傳 JSON 檔案。";
+            }
+        });
+
+        function processFile(file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    // 根據你提供的 Cocos 格式定位數據
+                    const spineData = data[5]?.[0];
+                    
+                    if (!spineData || !spineData[2]) throw new Error("找不到 Spine 數據結構");
+
+                    const name = spineData[1] || "spine_asset";
+                    const atlasText = spineData[2].replace(/\\n/g, '\n'); // 處理換行
+                    const skeletonJson = spineData[4];
+
+                    status.innerText = `✅ 解析成功：${name}`;
+                    downloadLinks.innerHTML = ''; // 清除舊連結
+
+                    // 產出 Atlas 下載
+                    createDownload(atlasText, `${name}.atlas`, "Atlas 檔案");
+                    // 產出 JSON 下載
+                    createDownload(JSON.stringify(skeletonJson, null, 2), `${name}.json`, "Skeleton JSON");
+
+                } catch (err) {
+                    status.innerText = "❌ 解析失敗：" + err.message;
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function createDownload(content, fileName, label) {
+            const blob = new Blob([content], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            a.innerText = `下載 ${label}`;
+            a.className = 'btn';
+            downloadLinks.appendChild(a);
+        }
+    </script>
+</body>
+</html>
