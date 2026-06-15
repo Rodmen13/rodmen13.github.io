@@ -1,0 +1,3386 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Claude Cowork 互動教學 · 把工作交給 AI</title>
+<meta name="description" content="Claude Cowork 完整中文教學:從零開始打造你的 AI 工作夥伴。涵蓋 6 大使用案例、6 步驟設定、模擬介面 Demo、安全機制與 FAQ。" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+/* ========== Reset & Base ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+:root {
+  --bg: #faf9f5;
+  --bg-alt: #f3f1ea;
+  --card: #ffffff;
+  --text: #1a1a1a;
+  --text-soft: #3d3d3d;
+  --muted: #6b6b6b;
+  --accent: #DA7757;
+  --accent-soft: #f5e3d8;
+  --accent-deep: #b35a3d;
+  --purple: #5436DA;
+  --green: #2f8a5f;
+  --red: #c93b3b;
+  --border: rgba(0,0,0,0.08);
+  --border-strong: rgba(0,0,0,0.16);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 4px 14px rgba(0,0,0,0.06);
+  --shadow-lg: 0 24px 60px -20px rgba(0,0,0,0.16);
+  --radius: 14px;
+  --radius-lg: 22px;
+  --nav-h: 64px;
+  --transition: 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+[data-theme="dark"] {
+  --bg: #1b1a17;
+  --bg-alt: #232220;
+  --card: #2a2926;
+  --text: #f3f0e8;
+  --text-soft: #d9d4c5;
+  --muted: #9b958a;
+  --accent: #e88a6c;
+  --accent-soft: #3a2c25;
+  --accent-deep: #f4a98a;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.18);
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow: 0 4px 14px rgba(0,0,0,0.35);
+  --shadow-lg: 0 24px 60px -20px rgba(0,0,0,0.7);
+}
+body {
+  font-family: "Noto Sans TC", "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 16px;
+  letter-spacing: 0.01em;
+  transition: background var(--transition), color var(--transition);
+}
+img, svg { display: block; max-width: 100%; }
+a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
+a:hover { color: var(--accent-deep); }
+code, pre, kbd { font-family: "JetBrains Mono", "SFMono-Regular", Menlo, monospace; }
+::selection { background: var(--accent); color: #fff; }
+
+/* ========== Layout ========== */
+.container { width: min(100% - 40px, 1180px); margin-inline: auto; }
+.section { padding: 96px 0; position: relative; }
+.section--alt { background: var(--bg-alt); }
+.section-head { max-width: 760px; margin: 0 auto 56px; text-align: center; }
+.kicker {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 6px 14px;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; color: var(--text); }
+h1 { font-size: clamp(38px, 6vw, 64px); font-weight: 800; }
+h2 { font-size: clamp(28px, 4vw, 42px); margin-bottom: 16px; }
+h3 { font-size: 22px; margin-bottom: 10px; }
+h4 { font-size: 17px; margin-bottom: 6px; }
+p.lead { font-size: 18px; color: var(--text-soft); }
+.muted { color: var(--muted); }
+
+/* ========== Nav ========== */
+nav.topnav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  height: var(--nav-h);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+nav .nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 100%;
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; color: var(--text); }
+.brand-mark {
+  width: 28px; height: 28px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: grid; place-items: center;
+  color: #fff; font-weight: 800; font-size: 14px;
+  box-shadow: 0 2px 8px rgba(218,119,87,0.4);
+}
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a { color: var(--text-soft); font-size: 14px; font-weight: 500; }
+.nav-links a:hover { color: var(--accent); }
+.nav-actions { display: flex; gap: 8px; align-items: center; }
+.icon-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: all var(--transition);
+}
+.icon-btn:hover { background: var(--bg-alt); border-color: var(--border-strong); }
+.menu-btn { display: none; }
+.progress-bar {
+  position: absolute; left: 0; bottom: -1px; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--purple));
+  width: 0%; transition: width 0.1s linear;
+}
+@media (max-width: 880px) {
+  .nav-links { display: none; }
+  .menu-btn { display: grid; }
+}
+
+/* ========== Buttons ========== */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px;
+  border-radius: 12px;
+  font-weight: 600; font-size: 15px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition);
+  font-family: inherit;
+}
+.btn--primary { background: var(--accent); color: #fff; box-shadow: 0 6px 22px -8px rgba(218,119,87,0.7); }
+.btn--primary:hover { background: var(--accent-deep); transform: translateY(-1px); color: #fff; }
+.btn--ghost { background: transparent; color: var(--text); border-color: var(--border-strong); }
+.btn--ghost:hover { background: var(--bg-alt); color: var(--text); }
+.btn--dark { background: var(--text); color: var(--bg); }
+.btn--dark:hover { opacity: 0.88; color: var(--bg); }
+
+/* ========== Hero ========== */
+.hero {
+  padding: calc(var(--nav-h) + 70px) 0 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(900px 400px at 12% -10%, rgba(218,119,87,0.18), transparent 60%),
+    radial-gradient(700px 360px at 90% 0%, rgba(84,54,218,0.10), transparent 60%);
+}
+.hero-grid {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-sm);
+}
+.hero-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(47,138,95,0.18); }
+.hero-title { margin-bottom: 18px; }
+.hero-title em { color: var(--accent); font-style: normal; }
+.hero-sub { font-size: 19px; color: var(--text-soft); margin-bottom: 32px; max-width: 540px; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-stats {
+  margin-top: 44px;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  max-width: 480px;
+}
+.hero-stats .num { font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; }
+.hero-stats .lbl { font-size: 13px; color: var(--muted); }
+
+/* Hero mock window */
+.window {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.window-bar {
+  height: 38px;
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 16px;
+  background: linear-gradient(180deg, var(--bg-alt), var(--card));
+  border-bottom: 1px solid var(--border);
+}
+.window-dots { display: flex; gap: 6px; }
+.window-dots span { width: 11px; height: 11px; border-radius: 50%; background: var(--border-strong); }
+.window-dots span:nth-child(1) { background: #ff5f57; }
+.window-dots span:nth-child(2) { background: #ffbd2e; }
+.window-dots span:nth-child(3) { background: #28c840; }
+.window-title { font-size: 13px; color: var(--muted); }
+
+.hero-mock { transform: rotate(-1.2deg); }
+.hero-mock .window-body { padding: 22px; }
+.chat-bubble {
+  padding: 12px 16px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  max-width: 88%;
+  animation: fadeUp 0.6s ease both;
+}
+.chat-bubble.user {
+  background: var(--accent-soft);
+  color: var(--text);
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+.chat-bubble.ai {
+  background: var(--bg-alt);
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+}
+.chat-bubble .label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 4px;
+}
+.plan-card {
+  margin-top: 8px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  padding: 14px;
+  background: var(--bg);
+  font-size: 13.5px;
+}
+.plan-card h5 { font-size: 13px; color: var(--accent); margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+.plan-card ul { list-style: none; }
+.plan-card li {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 4px 0;
+  color: var(--text-soft);
+}
+.plan-card li::before {
+  content: ""; width: 14px; height: 14px;
+  border: 2px solid var(--accent);
+  border-radius: 4px; flex-shrink: 0;
+  margin-top: 5px;
+  background: var(--accent);
+  background-image: linear-gradient(45deg, transparent 45%, #fff 45%, #fff 55%, transparent 55%), linear-gradient(-45deg, transparent 45%, #fff 45%, #fff 55%, transparent 55%);
+}
+.plan-card li.pending::before {
+  background: transparent;
+  background-image: none;
+  border-color: var(--border-strong);
+}
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+/* ========== Compare (Chat vs Cowork vs Code) ========== */
+.tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--card);
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  width: fit-content;
+  margin: 0 auto 40px;
+  box-shadow: var(--shadow-sm);
+}
+.tab {
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-soft);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  transition: all var(--transition);
+}
+.tab.active {
+  background: var(--text);
+  color: var(--bg);
+  box-shadow: var(--shadow);
+}
+.tab:not(.active):hover { color: var(--accent); }
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.compare-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  transition: all var(--transition);
+  position: relative;
+}
+.compare-card .badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+.compare-card.chat .badge { background: rgba(84,54,218,0.12); color: var(--purple); }
+.compare-card.cowork .badge { background: var(--accent-soft); color: var(--accent-deep); }
+.compare-card.code .badge { background: rgba(47,138,95,0.12); color: var(--green); }
+.compare-card.cowork {
+  border: 2px solid var(--accent);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+.compare-card h3 { margin-bottom: 14px; }
+.compare-card ul { list-style: none; margin-top: 14px; }
+.compare-card li {
+  font-size: 14px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 10px; align-items: flex-start;
+  color: var(--text-soft);
+}
+.compare-card li svg { flex-shrink: 0; margin-top: 3px; }
+
+/* ========== Demo Simulator ========== */
+.demo-wrap {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.demo-toolbar {
+  display: flex;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-alt);
+  flex-wrap: wrap;
+}
+.demo-toolbar .label { font-size: 13px; color: var(--muted); margin-right: 4px; align-self: center; }
+.demo-chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  color: var(--text-soft);
+  font-family: inherit;
+}
+.demo-chip:hover { border-color: var(--accent); color: var(--accent); }
+.demo-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.demo-body {
+  display: grid;
+  grid-template-columns: 240px 1fr 280px;
+  min-height: 480px;
+}
+.file-tree {
+  background: var(--bg-alt);
+  border-right: 1px solid var(--border);
+  padding: 18px;
+  font-size: 13.5px;
+  overflow-y: auto;
+}
+.file-tree .root { font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.file-tree ul { list-style: none; }
+.file-tree li {
+  padding: 4px 0 4px 18px;
+  color: var(--text-soft);
+  position: relative;
+  cursor: default;
+  display: flex; align-items: center; gap: 6px;
+}
+.file-tree li.dir { font-weight: 600; color: var(--text); }
+.file-tree li.new {
+  animation: highlight 1.2s ease;
+}
+@keyframes highlight {
+  0% { background: var(--accent-soft); }
+  100% { background: transparent; }
+}
+.file-icon { color: var(--muted); width: 14px; height: 14px; flex-shrink: 0; }
+.chat-area {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 540px;
+}
+.plan-side {
+  background: var(--bg-alt);
+  border-left: 1px solid var(--border);
+  padding: 22px 18px;
+  overflow-y: auto;
+}
+.plan-side h4 {
+  font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.plan-step {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 0;
+  font-size: 13.5px;
+  color: var(--text-soft);
+  border-top: 1px dashed var(--border);
+}
+.plan-step:first-of-type { border-top: none; }
+.step-marker {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--border-strong);
+  display: grid; place-items: center;
+  font-size: 11px; font-weight: 700;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+.plan-step.done .step-marker { background: var(--green); border-color: var(--green); color: #fff; }
+.plan-step.active .step-marker { background: var(--accent); border-color: var(--accent); color: #fff; animation: pulse 1.4s ease infinite; }
+.plan-step.done { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(0,0,0,0.2); }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(218,119,87,0.6); } 50% { box-shadow: 0 0 0 8px rgba(218,119,87,0); } }
+
+.typing { color: var(--muted); font-size: 13px; display: inline-flex; gap: 3px; align-items: center; }
+.typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); animation: bounce 1.2s infinite ease-in-out; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce { 0%, 80%, 100% { transform: scale(0.4); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+
+@media (max-width: 980px) {
+  .demo-body { grid-template-columns: 1fr; }
+  .file-tree, .plan-side { border: none; border-bottom: 1px solid var(--border); }
+}
+
+/* ========== Prereq ========== */
+.prereq-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+.prereq-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.prereq-card .ic { font-size: 26px; margin-bottom: 12px; }
+.prereq-card h4 { font-size: 15px; margin-bottom: 4px; }
+.prereq-card p { font-size: 13.5px; color: var(--muted); }
+
+/* ========== Setup steps ========== */
+.steps-wrap {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+.steps-nav {
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
+  display: flex; flex-direction: column;
+  gap: 4px;
+}
+.step-nav-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 14px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: transparent;
+  border: 1px solid transparent;
+  text-align: left;
+  font-family: inherit;
+  width: 100%;
+}
+.step-nav-item:hover { background: var(--card); }
+.step-nav-item.active { background: var(--card); border-color: var(--border-strong); box-shadow: var(--shadow); }
+.step-num {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--bg-alt);
+  display: grid; place-items: center;
+  font-weight: 700; font-size: 14px;
+  color: var(--text);
+  flex-shrink: 0;
+  transition: all var(--transition);
+}
+.step-nav-item.active .step-num { background: var(--accent); color: #fff; }
+.step-nav-item .meta { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.step-nav-item .title { font-size: 14.5px; font-weight: 600; color: var(--text); line-height: 1.4; }
+
+.step-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  min-height: 540px;
+}
+.step-panel-header { margin-bottom: 24px; }
+.step-panel-header .pill {
+  display: inline-block;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 11px; font-weight: 700;
+  padding: 4px 10px; border-radius: 6px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.step-panel h3 { font-size: 26px; }
+.step-panel .lead { margin-top: 8px; }
+.step-content > *:not(:last-child) { margin-bottom: 20px; }
+.step-content h4 { margin-top: 16px; color: var(--accent-deep); font-size: 15px; }
+.step-content ul { padding-left: 20px; color: var(--text-soft); }
+.step-content li { margin: 4px 0; }
+.step-content p { color: var(--text-soft); }
+
+.code-block {
+  background: #1a1a1a;
+  color: #e8e6e0;
+  border-radius: 12px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13.5px;
+  line-height: 1.7;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.code-block .code-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px;
+  background: #232220;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 12px;
+  color: #9b958a;
+}
+.code-block pre {
+  padding: 16px 18px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.copy-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #d9d4c5;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all var(--transition);
+}
+.copy-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); }
+
+.callout {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  font-size: 14px;
+  color: var(--text-soft);
+}
+.callout.danger { background: rgba(201,59,59,0.08); border-left-color: var(--red); }
+.callout.info { background: rgba(84,54,218,0.07); border-left-color: var(--purple); }
+.callout .ic { flex-shrink: 0; margin-top: 2px; }
+.callout strong { color: var(--text); }
+
+@media (max-width: 880px) {
+  .steps-wrap { grid-template-columns: 1fr; }
+  .steps-nav { position: static; flex-direction: row; flex-wrap: wrap; }
+  .step-nav-item { flex: 1 1 calc(50% - 4px); }
+}
+
+/* ========== Safety ========== */
+.safety-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+.safety-col {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+}
+.safety-col.ok { border-top: 4px solid var(--green); }
+.safety-col.risk { border-top: 4px solid var(--red); }
+.safety-col h3 { display: flex; align-items: center; gap: 10px; }
+.safety-list { list-style: none; margin-top: 16px; }
+.safety-list li {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  font-size: 14.5px;
+  color: var(--text-soft);
+}
+.safety-list li:first-child { border-top: none; }
+.safety-list svg { flex-shrink: 0; margin-top: 3px; }
+
+/* ========== Pricing ========== */
+.price-table {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.price-row {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  padding: 18px 24px;
+  align-items: center;
+  border-top: 1px solid var(--border);
+}
+.price-row:first-child { border-top: none; background: var(--bg-alt); font-weight: 700; font-size: 13px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+.price-row.featured { background: linear-gradient(180deg, var(--accent-soft), transparent); }
+.price-name { font-weight: 700; font-size: 16px; }
+.price-amount { font-weight: 700; }
+.price-amount small { font-weight: 400; color: var(--muted); }
+.cowork-check { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; }
+.cowork-check.yes { background: rgba(47,138,95,0.15); color: var(--green); }
+.cowork-check.no { background: rgba(201,59,59,0.10); color: var(--red); }
+
+@media (max-width: 720px) {
+  .price-row { grid-template-columns: 1fr 1fr; padding: 14px; gap: 8px; }
+  .price-row:first-child { display: none; }
+  .price-row > div::before { content: attr(data-lbl); display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+}
+
+/* ========== FAQ ========== */
+.faq-list { display: flex; flex-direction: column; gap: 10px; max-width: 820px; margin: 0 auto; }
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.faq-item.open { border-color: var(--accent); box-shadow: var(--shadow); }
+.faq-q {
+  width: 100%;
+  display: flex; justify-content: space-between; align-items: center; gap: 18px;
+  padding: 18px 22px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--text);
+}
+.faq-q .chev { transition: transform var(--transition); color: var(--muted); flex-shrink: 0; }
+.faq-item.open .chev { transform: rotate(180deg); color: var(--accent); }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition);
+  color: var(--text-soft);
+  font-size: 14.5px;
+  line-height: 1.8;
+}
+.faq-a-inner { padding: 0 22px 20px; }
+.faq-item.open .faq-a { max-height: 480px; }
+
+/* ========== Audience ========== */
+.aud-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.aud-col {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+}
+.aud-col h3 { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; }
+.aud-col ul { list-style: none; }
+.aud-col li {
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+  color: var(--text-soft);
+  font-size: 14.5px;
+}
+.aud-col li:first-child { border-top: none; }
+
+/* ========== CTA ========== */
+.cta-section {
+  text-align: center;
+  background:
+    radial-gradient(700px 360px at 50% 0%, rgba(218,119,87,0.18), transparent 70%),
+    var(--card);
+  border: 1px solid var(--border);
+  border-radius: 32px;
+  padding: 72px 40px;
+  margin: 40px auto;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section h2 { margin-bottom: 14px; }
+.cta-section p { font-size: 17px; color: var(--text-soft); max-width: 560px; margin: 0 auto 28px; }
+.cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ========== Footer ========== */
+footer {
+  background: var(--bg-alt);
+  padding: 50px 0 30px;
+  border-top: 1px solid var(--border);
+}
+.foot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+.foot-grid h5 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 14px; }
+.foot-grid ul { list-style: none; }
+.foot-grid li { padding: 4px 0; font-size: 14px; }
+.foot-grid li a { color: var(--text-soft); }
+.foot-grid li a:hover { color: var(--accent); }
+.foot-brand p { color: var(--muted); font-size: 13.5px; max-width: 320px; margin-top: 8px; }
+.foot-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  font-size: 13px; color: var(--muted);
+}
+
+@media (max-width: 880px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-mock { transform: none; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .compare-card.cowork { transform: none; }
+  .prereq-grid { grid-template-columns: repeat(2, 1fr); }
+  .safety-grid, .aud-grid { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+  .section { padding: 64px 0; }
+}
+
+/* ========== Scroll reveal ========== */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ========== Floating menu (mobile) ========== */
+.mobile-menu {
+  position: fixed; inset: var(--nav-h) 0 0 0;
+  background: var(--bg);
+  z-index: 49;
+  padding: 30px 24px;
+  transform: translateY(-110%);
+  transition: transform var(--transition);
+}
+.mobile-menu.open { transform: none; }
+.mobile-menu a {
+  display: block;
+  padding: 16px 0;
+  font-size: 18px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--bg-alt);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-right: 6px;
+}
+
+/* ========== Advanced Cases (from Notion) ========== */
+.adv-filters {
+  display: flex; gap: 8px;
+  justify-content: center; flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.adv-chip {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-soft);
+  font-family: inherit;
+  transition: all var(--transition);
+}
+.adv-chip:hover { border-color: var(--accent); color: var(--accent); }
+.adv-chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+.adv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.adv-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex; flex-direction: column; gap: 12px;
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+.adv-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--purple));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition);
+}
+.adv-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: var(--shadow); }
+.adv-card:hover::after { transform: scaleX(1); }
+.adv-card.hidden { display: none; }
+.adv-card .adv-cat-tag {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 10px; border-radius: 6px;
+  background: var(--accent-soft); color: var(--accent-deep);
+  text-transform: uppercase;
+  width: fit-content;
+}
+.adv-card.cat-marketing .adv-cat-tag { background: rgba(84,54,218,0.12); color: var(--purple); }
+.adv-card.cat-sales .adv-cat-tag { background: rgba(47,138,95,0.12); color: var(--green); }
+.adv-card.cat-automation .adv-cat-tag { background: rgba(201,59,59,0.12); color: var(--red); }
+.adv-card .adv-ic { font-size: 32px; line-height: 1; }
+.adv-card h3 { font-size: 18px; margin: 0; }
+.adv-card .adv-desc { font-size: 14px; color: var(--text-soft); margin: 0; line-height: 1.65; }
+.adv-card .adv-meta {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: var(--muted);
+}
+.adv-card .adv-meta .opn { color: var(--accent); font-weight: 600; }
+
+/* Modal */
+.adv-modal {
+  position: fixed; inset: 0; z-index: 100;
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.adv-modal.open { display: flex; }
+.adv-modal-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  cursor: pointer;
+  animation: advFade 0.2s;
+}
+@keyframes advFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes advSlide { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+.adv-modal-body {
+  position: relative;
+  background: var(--card);
+  border-radius: 22px;
+  max-width: 800px; width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+  animation: advSlide 0.25s cubic-bezier(0.2,0.7,0.2,1);
+}
+.adv-modal-close {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: grid; place-items: center;
+  color: var(--text); z-index: 2;
+  font-family: inherit;
+  font-size: 16px;
+  transition: all var(--transition);
+}
+.adv-modal-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: rotate(90deg); }
+.adv-modal-head { padding: 36px 36px 0; }
+.adv-modal-head .adv-cat-tag {
+  display: inline-block; margin-bottom: 14px;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 4px 12px; border-radius: 6px;
+  background: var(--accent-soft); color: var(--accent-deep);
+  text-transform: uppercase;
+}
+.adv-modal-head h3 {
+  font-size: 26px;
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 8px;
+}
+.adv-modal-head .adv-ic { font-size: 38px; }
+.adv-modal-head .adv-desc { color: var(--text-soft); font-size: 16px; margin-top: 8px; }
+
+.adv-tabs {
+  display: flex; gap: 4px;
+  padding: 24px 36px 0;
+  border-bottom: 1px solid var(--border);
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+.adv-tab {
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--muted);
+  position: relative;
+  font-family: inherit;
+  transition: color var(--transition);
+}
+.adv-tab:hover { color: var(--text); }
+.adv-tab.active { color: var(--accent); }
+.adv-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+}
+.adv-tab-pane {
+  padding: 28px 36px 36px;
+  display: none;
+}
+.adv-tab-pane.active { display: block; animation: advFade 0.25s; }
+.adv-tab-pane h4 {
+  font-size: 12px; color: var(--accent-deep);
+  margin-bottom: 12px;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  font-weight: 700;
+}
+.adv-tab-pane p {
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+.adv-tab-pane ol, .adv-tab-pane ul {
+  color: var(--text-soft);
+  padding-left: 22px;
+  line-height: 1.8;
+}
+.adv-tab-pane ol li, .adv-tab-pane ul li { margin: 6px 0; }
+.adv-tab-pane .empty-note {
+  padding: 24px;
+  background: var(--bg-alt);
+  border-radius: 12px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 14px;
+}
+
+@media (max-width: 880px) {
+  .adv-grid { grid-template-columns: 1fr; }
+  .adv-modal { padding: 12px; }
+  .adv-modal-head, .adv-tabs, .adv-tab-pane { padding-left: 22px; padding-right: 22px; }
+  .adv-modal-head { padding-top: 28px; }
+  .adv-modal-body { max-height: 94vh; }
+  .adv-tabs { gap: 0; overflow-x: auto; }
+  .adv-tab { white-space: nowrap; }
+}
+
+/* ========== Pillars ========== */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.pillar-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  display: flex; flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition);
+  color: var(--text);
+  text-decoration: none;
+}
+.pillar-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+}
+.pillar-card .pillar-num {
+  position: absolute;
+  top: 20px; right: 22px;
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--bg-alt);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  z-index: 0;
+}
+.pillar-card .pillar-ic {
+  font-size: 38px;
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+.pillar-card h3 {
+  margin-bottom: 4px;
+  font-size: 20px;
+  position: relative; z-index: 1;
+}
+.pillar-card .muted {
+  font-size: 13px;
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+.pillar-card > p:not(.muted) {
+  font-size: 14px;
+  color: var(--text-soft);
+  line-height: 1.7;
+  flex-grow: 1;
+  margin-bottom: 16px;
+  position: relative; z-index: 1;
+}
+.pillar-card .pillar-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: auto;
+  position: relative; z-index: 1;
+  transition: transform var(--transition);
+}
+.pillar-card:hover .pillar-link { transform: translateX(4px); }
+
+@media (max-width: 880px) {
+  .pillars-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .pillars-grid { grid-template-columns: 1fr; }
+}
+
+/* ========== Features Tour ========== */
+.features-wrap {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.features-nav {
+  position: sticky;
+  top: calc(var(--nav-h) + 24px);
+  display: flex; flex-direction: column;
+  gap: 4px;
+  max-height: calc(100vh - var(--nav-h) - 60px);
+  overflow-y: auto;
+}
+.feat-nav-item {
+  display: flex; gap: 12px; align-items: center;
+  padding: 12px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: transparent;
+  border: 1px solid transparent;
+  text-align: left;
+  font-family: inherit;
+  width: 100%;
+  color: var(--text);
+}
+.feat-nav-item:hover { background: var(--card); }
+.feat-nav-item.active {
+  background: var(--card);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+.feat-nav-item .feat-ic {
+  font-size: 20px;
+  width: 32px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.feat-nav-item .feat-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.feat-nav-item .feat-cat {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.feat-nav-item.active .feat-cat { color: var(--accent); }
+
+.features-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  min-height: 620px;
+}
+.feat-head {
+  display: flex; align-items: flex-start; gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.feat-head .feat-big-ic {
+  font-size: 56px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.feat-head .feat-meta-pill {
+  display: inline-block;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 4px 10px; border-radius: 6px;
+  background: var(--accent-soft); color: var(--accent-deep);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.feat-head h3 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.feat-head .feat-short {
+  font-size: 16px;
+  color: var(--text-soft);
+}
+.feat-body { line-height: 1.85; color: var(--text-soft); }
+.feat-body h4 {
+  color: var(--accent-deep);
+  font-size: 14px;
+  margin-top: 24px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+.feat-body p { margin-bottom: 12px; }
+.feat-body ul, .feat-body ol { padding-left: 22px; margin-bottom: 12px; }
+.feat-body li { margin: 5px 0; }
+.feat-body strong { color: var(--text); }
+.feat-body code {
+  background: var(--bg-alt);
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 13px;
+  color: var(--accent-deep);
+}
+.feat-body .feat-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0;
+}
+.feat-body .feat-mini-card {
+  background: var(--bg-alt);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 14px;
+}
+.feat-body .feat-mini-card strong { display: block; margin-bottom: 4px; color: var(--accent-deep); }
+.feat-body .feat-tag {
+  display: inline-block;
+  background: var(--bg-alt);
+  color: var(--text-soft);
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  margin: 0 4px 4px 0;
+  font-weight: 500;
+}
+
+.feat-nav-foot {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 880px) {
+  .features-wrap { grid-template-columns: 1fr; }
+  .features-nav {
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    max-height: none;
+    padding-bottom: 8px;
+  }
+  .feat-nav-item { flex: 0 0 auto; min-width: 200px; }
+  .features-panel { padding: 28px 22px; }
+  .feat-head { gap: 14px; flex-wrap: wrap; }
+  .feat-head .feat-big-ic { font-size: 42px; }
+  .feat-head h3 { font-size: 22px; }
+  .feat-body .feat-grid2 { grid-template-columns: 1fr; }
+}
+
+/* ========== Demo Artifact Previews (成品卡) ========== */
+.artifact-card {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 6px;
+  box-shadow: var(--shadow);
+  animation: fadeUp 0.5s ease both;
+}
+.artifact-head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--border);
+}
+.artifact-head .a-ic { font-size: 18px; }
+.artifact-head .a-name { font-weight: 600; font-size: 13.5px; flex: 1; color: var(--text); }
+.artifact-head .a-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--green); background: rgba(47,138,95,.14);
+  padding: 3px 8px; border-radius: 5px;
+}
+.artifact-views { display: flex; gap: 4px; padding: 8px 12px 0; background: var(--bg-alt); }
+.artifact-view-tab {
+  font-size: 12px; padding: 6px 12px; border-radius: 8px 8px 0 0;
+  cursor: pointer; border: none; background: transparent;
+  color: var(--muted); font-family: inherit; font-weight: 600;
+}
+.artifact-view-tab.active { background: var(--card); color: var(--accent); }
+.artifact-body { padding: 14px; overflow-x: auto; }
+
+/* Excel 試算表 */
+.xls { font-size: 12px; min-width: 360px; }
+.xls-formula { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-family: "JetBrains Mono", monospace; }
+.xls-formula .cell-ref { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; font-weight: 600; color: var(--text); }
+.xls-formula .fx { color: var(--muted); font-size: 11.5px; }
+.xls-grid { border-collapse: collapse; width: 100%; font-family: "JetBrains Mono", monospace; }
+.xls-grid th, .xls-grid td { border: 1px solid var(--border); padding: 5px 8px; text-align: left; color: var(--text-soft); white-space: nowrap; }
+.xls-grid th { background: var(--bg-alt); color: var(--muted); font-weight: 600; font-size: 11px; }
+.xls-grid .rownum { background: var(--bg-alt); color: var(--muted); text-align: center; width: 26px; }
+.xls-grid td.num { text-align: right; }
+.xls-grid .xls-total td { font-weight: 700; background: var(--accent-soft); color: var(--text); }
+
+/* SVG 圖表 */
+.chart-wrap { display: flex; flex-direction: column; gap: 12px; align-items: center; padding: 6px 0; }
+.chart-wrap svg { width: 100%; max-width: 360px; }
+.chart-cap { font-size: 11.5px; color: var(--muted); }
+
+/* Word / PDF 文件頁 */
+.doc-page {
+  background: #ffffff; color: #1a1a1a;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 26px 30px;
+  max-width: 430px; margin: 0 auto;
+  box-shadow: 0 6px 22px rgba(0,0,0,.12);
+}
+.doc-page h1 { font-size: 18px; color: #111; margin-bottom: 4px; letter-spacing: -0.01em; }
+.doc-page .doc-meta { font-size: 11px; color: #999; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #DA7757; }
+.doc-page h2 { font-size: 13.5px; color: #222; margin: 16px 0 8px; }
+.doc-page p { font-size: 12px; color: #444; line-height: 1.7; margin-bottom: 8px; }
+.doc-line { height: 7px; background: #ededed; border-radius: 3px; margin: 6px 0; }
+.doc-line.w90 { width: 90%; } .doc-line.w80 { width: 80%; } .doc-line.w70 { width: 70%; } .doc-line.w60 { width: 60%; }
+
+/* PPT 投影片 16:9 */
+.slide-wrap { position: relative; max-width: 460px; margin: 0 auto; }
+.slide {
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(135deg, #1d1d2e, #2e2547);
+  border-radius: 10px; padding: 22px 26px; color: #fff;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+  box-shadow: 0 8px 26px rgba(0,0,0,.28);
+}
+.slide .s-kicker { font-size: 9.5px; letter-spacing: .2em; color: #e88a6c; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+.slide h2 { font-size: 19px; color: #fff; margin-bottom: 12px; line-height: 1.3; letter-spacing: -0.01em; }
+.slide ul { list-style: none; }
+.slide li { font-size: 12.5px; color: #d9d4e8; padding: 4px 0 4px 18px; position: relative; }
+.slide li::before { content: ""; position: absolute; left: 0; top: 10px; width: 7px; height: 7px; border-radius: 50%; background: #e88a6c; }
+.slide-foot { position: absolute; bottom: 12px; right: 16px; font-size: 10px; color: rgba(255,255,255,.45); }
+.slide-nav { display: flex; justify-content: center; gap: 7px; margin-top: 12px; }
+.slide-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-strong); cursor: pointer; transition: all var(--transition); border: none; padding: 0; }
+.slide-dot.active { background: var(--accent); transform: scale(1.3); }
+
+/* Markdown 摘要 / 早報 */
+.digest { font-size: 13px; }
+.digest h3 { font-size: 14px; margin-bottom: 10px; color: var(--accent-deep); }
+.digest-sec { margin-bottom: 12px; padding-left: 12px; border-left: 2px solid var(--accent-soft); }
+.digest-sec strong { display: block; margin-bottom: 4px; color: var(--text); }
+.digest-sec ul { padding-left: 18px; color: var(--text-soft); }
+.digest-sec li { margin: 3px 0; }
+.brief-stats { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.brief-stat { flex: 1; min-width: 88px; background: var(--bg-alt); border-radius: 10px; padding: 12px; text-align: center; }
+.brief-stat b { display: block; font-size: 24px; color: var(--accent); line-height: 1.1; }
+.brief-stat span { font-size: 11px; color: var(--muted); }
+
+/* 檔案分類對照表 */
+.cls-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 380px; }
+.cls-table th { text-align: left; color: var(--muted); font-weight: 600; font-size: 11px; padding: 4px 8px; border-bottom: 1px solid var(--border); }
+.cls-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+.cls-table .old { color: var(--muted); text-decoration: line-through; font-family: "JetBrains Mono", monospace; font-size: 11px; }
+.cls-table .arr { color: var(--accent); text-align: center; }
+.cls-table .new { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--text-soft); }
+.cls-table .cat { background: var(--accent-soft); color: var(--accent-deep); font-size: 10px; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+
+/* ============== SCENARIOS(六大真實應用情境) ============== */
+.scn-list { display: flex; flex-direction: column; gap: 18px; max-width: 880px; margin: 0 auto; }
+.scn-row {
+  display: grid; grid-template-columns: 84px 1fr; gap: 24px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px 30px;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+.scn-row:hover { border-color: var(--accent); box-shadow: var(--shadow); transform: translateY(-2px); }
+.scn-num { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.scn-num span {
+  font-family: "JetBrains Mono", monospace; font-size: 26px; font-weight: 700;
+  color: var(--accent); letter-spacing: -0.02em; line-height: 1;
+}
+.scn-num .scn-ic { font-size: 30px; }
+.scn-body h3 { font-size: 19px; margin-bottom: 8px; }
+.scn-body > p { color: var(--text-soft); font-size: 14.5px; line-height: 1.75; margin-bottom: 14px; }
+.scn-prompt {
+  font-family: "JetBrains Mono", monospace; font-size: 13px; line-height: 1.7;
+  background: var(--bg-alt); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+  border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; color: var(--text-soft);
+}
+.scn-prompt::before { content: "prompt"; display: block; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.scn-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
+.scn-flow span {
+  font-size: 12.5px; font-weight: 600; color: var(--text-soft);
+  background: var(--bg-alt); border: 1px solid var(--border);
+  border-radius: 999px; padding: 6px 13px; white-space: nowrap;
+}
+.scn-flow i { font-style: normal; color: var(--accent); font-weight: 700; }
+.scn-fit { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.scn-fit strong { color: var(--text); }
+.scn-tip {
+  display: flex; gap: 8px; align-items: flex-start;
+  font-size: 13px; line-height: 1.65; color: var(--text-soft);
+  background: var(--accent-soft); border-radius: 8px; padding: 10px 14px;
+}
+.scn-tip a { color: var(--accent-deep); font-weight: 600; }
+@media (max-width: 720px) {
+  .scn-row { grid-template-columns: 1fr; gap: 14px; padding: 22px 20px; }
+  .scn-num { flex-direction: row; justify-content: flex-start; }
+  .scn-flow span { white-space: normal; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============== NAV ============== -->
+<nav class="topnav">
+  <div class="container nav-inner">
+    <a href="#top" class="brand">
+      <span class="brand-mark">C</span>
+      <span>Claude Cowork 教學</span>
+    </a>
+    <div class="nav-links">
+      <a href="#what">是什麼</a>
+      <a href="#pillars">四大基礎</a>
+      <a href="#features">完整功能</a>
+      <a href="#demo">介面 Demo</a>
+      <a href="#scenarios">應用情境</a>
+      <a href="#advanced">實戰範本</a>
+      <a href="#setup">六步驟設定</a>
+      <a href="#safety">安全</a>
+      <a href="#pricing">價格</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="切換主題">
+        <svg id="themeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" id="menuBtn" aria-label="選單">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="progress-bar" id="progressBar"></div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#what">是什麼</a>
+  <a href="#pillars">四大基礎</a>
+  <a href="#features">完整功能</a>
+  <a href="#demo">介面 Demo</a>
+  <a href="#scenarios">應用情境</a>
+  <a href="#advanced">實戰範本</a>
+  <a href="#setup">六步驟設定</a>
+  <a href="#safety">安全機制</a>
+  <a href="#pricing">價格方案</a>
+  <a href="#faq">常見問題</a>
+</div>
+
+<a id="top"></a>
+
+<!-- ============== HERO ============== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container hero-grid">
+    <div>
+      <div class="hero-tag">
+        <span class="dot"></span>
+        Claude Cowork · 現已開放 Beta
+      </div>
+      <h1 class="hero-title">把工作 <em>交給</em> Claude<br/>專注於享受 <em>成品</em>。</h1>
+      <p class="hero-sub">Cowork 是 Anthropic 把 Claude Code 重新包裝給所有人的桌面 AI 工作夥伴。授權一個資料夾,它就能讀寫檔案、規劃多步驟、產出真正可用的 Excel、Word、PPT。</p>
+      <div class="hero-cta">
+        <a class="btn btn--primary" href="#setup">
+          開始六步驟設定
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="#demo">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          觀看介面 Demo
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="num">6+</div><div class="lbl">真實使用案例</div></div>
+        <div><div class="num">6</div><div class="lbl">步驟完整設定</div></div>
+        <div><div class="num">100%</div><div class="lbl">繁體中文教學</div></div>
+      </div>
+    </div>
+
+    <!-- Hero Mock Window -->
+    <div class="window hero-mock">
+      <div class="window-bar">
+        <div class="window-dots"><span></span><span></span><span></span></div>
+        <div class="window-title">Claude Cowork · Claude-workspace</div>
+      </div>
+      <div class="window-body">
+        <div class="chat-bubble user">
+          <span class="label">你</span>
+          幫我把這個月的收據截圖整理成 Excel 報帳表。
+        </div>
+        <div class="chat-bubble ai">
+          <span class="label">Claude</span>
+          好的,我已掃描 <code style="background:rgba(0,0,0,0.05);padding:1px 6px;border-radius:4px;">/projects/2026-05-receipts</code>,共 24 張收據。準備執行以下計畫:
+          <div class="plan-card">
+            <h5>執行計畫</h5>
+            <ul>
+              <li>辨識每張收據的店家、日期、金額</li>
+              <li>建立 Excel 表格(含分類、稅額公式)</li>
+              <li class="pending">輸出至 <code>/outputs/2026-05-報帳表.xlsx</code></li>
+              <li class="pending">產生 PDF 副本</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== WHAT IS COWORK ============== -->
+<section class="section section--alt" id="what">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">概念入門</div>
+      <h2>Chat / Cowork / Code 到底差在哪?</h2>
+      <p class="lead">同樣是 Claude,三條產品線分別服務不同情境。Cowork 是「能動手做事的 Claude」,而不是「會回答問題的 Claude」。</p>
+    </div>
+
+    <div class="tabs reveal" role="tablist">
+      <button class="tab active" data-tab="all">全部比較</button>
+      <button class="tab" data-tab="file">檔案處理</button>
+      <button class="tab" data-tab="exec">執行邏輯</button>
+      <button class="tab" data-tab="out">輸出形式</button>
+    </div>
+
+    <div class="compare-grid reveal">
+      <div class="compare-card chat">
+        <div class="badge">Chat · 對話</div>
+        <h3>給建議的 Claude</h3>
+        <p class="muted">瀏覽器或手機 App,一問一答的聊天介面。</p>
+        <ul>
+          <li data-tag="file"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--purple)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>需要手動上傳、下載檔案</li>
+          <li data-tag="exec"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--purple)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>一問一答,單一步驟為主</li>
+          <li data-tag="out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--purple)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>輸出純文字或可下載檔</li>
+        </ul>
+      </div>
+      <div class="compare-card cowork">
+        <div class="badge">Cowork · 同事</div>
+        <h3>能動手做事的 Claude</h3>
+        <p class="muted">桌面 App,委派任務,看著它跑、或下班再回來看成果。</p>
+        <ul>
+          <li data-tag="file"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>直接讀寫本地授權資料夾</li>
+          <li data-tag="exec"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>自主規劃、持續推進多步驟</li>
+          <li data-tag="out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>真實可用的 .xlsx、.docx、.pptx</li>
+        </ul>
+      </div>
+      <div class="compare-card code">
+        <div class="badge">Code · 開發者</div>
+        <h3>給工程師的 Claude</h3>
+        <p class="muted">CLI 終端機介面,操控整個專案 codebase。</p>
+        <ul>
+          <li data-tag="file"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--green)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>整個 repo 的檔案系統存取</li>
+          <li data-tag="exec"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--green)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>多代理協作、執行指令</li>
+          <li data-tag="out"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--green)"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>commits、PR、跑測試</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:36px;" class="reveal">
+      <p class="muted" style="font-size:14px;">記住口訣:<strong style="color:var(--text);">Chat 優先;有開發需求用 Code;需操作本機檔案用 Cowork。</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOUR PILLARS ============== -->
+<section class="section" id="pillars">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">核心心智模型</div>
+      <h2>Cowork 強大背後的四大基礎建設</h2>
+      <p class="lead">Cowork 不是單一功能,而是四個元件組成的工作系統。理解這四件事,所有進階操作都會變直覺。</p>
+    </div>
+    <div class="pillars-grid reveal">
+      <a class="pillar-card" href="#features" data-feature="documents">
+        <div class="pillar-num">01</div>
+        <div class="pillar-ic">📂</div>
+        <h3>指定資料夾</h3>
+        <p class="muted">安全邊界 + 工作區</p>
+        <p>Claude 只能在這個資料夾內讀寫。Allow 是單次授權、Always Allow 是永久。所有檔案、輸出、記憶都集中在這裡。</p>
+        <span class="pillar-link">→ 看文件生成怎麼用</span>
+      </a>
+      <a class="pillar-card" href="#features" data-feature="claude-md">
+        <div class="pillar-num">02</div>
+        <div class="pillar-ic">🧠</div>
+        <h3>CLAUDE.md</h3>
+        <p class="muted">專案記憶與行為準則</p>
+        <p>Cowork 自動生成的記憶文件。每次進入專案,Claude 會先讀它,當作工作準則。把用字、規範、敏感資料處理寫進去一次,長期受用。</p>
+        <span class="pillar-link">→ 看 CLAUDE.md 細節</span>
+      </a>
+      <a class="pillar-card" href="#features" data-feature="skills">
+        <div class="pillar-num">03</div>
+        <div class="pillar-ic">📚</div>
+        <h3>Skill</h3>
+        <p class="muted">可重用的 SOP 說明書</p>
+        <p>把常用工作流封裝成「斜線指令」。Claude 平時不載入,需要才翻閱。比寫進 CLAUDE.md 更省 context。可瀏覽範本、Skill Creator 互動建立、或手動填寫。</p>
+        <span class="pillar-link">→ 看 Skill 完整玩法</span>
+      </a>
+      <a class="pillar-card" href="#features" data-feature="connectors">
+        <div class="pillar-num">04</div>
+        <div class="pillar-ic">🔌</div>
+        <h3>Connector</h3>
+        <p class="muted">外部工具串接</p>
+        <p>讓 Cowork 操作 Canva、Google 日曆、Gmail、Slack、Notion 等服務。授權一次,以後 Claude 能跨平台讀寫、自動化重複任務。</p>
+        <span class="pillar-link">→ 看 Connectors 範例</span>
+      </a>
+    </div>
+
+    <div class="callout reveal" style="margin-top:32px;max-width:820px;margin-inline:auto;">
+      <span class="ic">🎯</span>
+      <div><strong>一句話總結:</strong>Cowork 把 Claude 從「被動聊天工具」升級成「會主動值勤、能跨工具實際完成工作的數位助理」。這四個基礎建設就是讓它能值勤的水電瓦斯。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== COMPLETE FEATURES TOUR ============== -->
+<section class="section section--alt" id="features">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">完整功能總覽</div>
+      <h2>Cowork 的 11 大功能,一次看完</h2>
+      <p class="lead">點選左側任一功能,看詳細說明、設定方式、典型範例。從基礎介面到 Subagent 並行、Computer Use 遠端操控,全部涵蓋。</p>
+    </div>
+
+    <div class="features-wrap">
+      <div class="features-nav reveal" id="featuresNav"></div>
+      <div class="features-panel reveal" id="featuresPanel"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== DEMO SIMULATOR ============== -->
+<section class="section" id="demo">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">介面 Demo</div>
+      <h2>模擬 Claude Cowork 工作流程</h2>
+      <p class="lead">點擊下方任一情境,看 Claude 如何讀檔案、出計畫、執行任務、產出檔案。完全模擬實際介面的左中右三欄結構。</p>
+    </div>
+
+    <div class="demo-wrap reveal">
+      <div class="window-bar">
+        <div class="window-dots"><span></span><span></span><span></span></div>
+        <div class="window-title">Claude Cowork · ~/Desktop/Claude-workspace</div>
+      </div>
+      <div class="demo-toolbar">
+        <span class="label">試試看:</span>
+        <button class="demo-chip active" data-scene="receipt">📑 收據整理成 Excel</button>
+        <button class="demo-chip" data-scene="report">📝 會議筆記轉季報</button>
+        <button class="demo-chip" data-scene="files">📁 下載夾大掃除</button>
+        <button class="demo-chip" data-scene="slack">💬 Slack 週摘要</button>
+        <button class="demo-chip" data-scene="email">📧 每日信箱摘要</button>
+      </div>
+
+      <div class="demo-body">
+        <!-- File tree -->
+        <div class="file-tree" id="fileTree">
+          <div class="root">
+            <svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            Claude-workspace
+          </div>
+          <ul id="treeList"></ul>
+        </div>
+
+        <!-- Chat -->
+        <div class="chat-area" id="chatArea"></div>
+
+        <!-- Plan side -->
+        <div class="plan-side">
+          <h4>執行計畫</h4>
+          <div id="planList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout info reveal" style="margin-top:24px;">
+      <span class="ic">💡</span>
+      <div><strong>觀察重點:</strong>Cowork 不是直接執行,而是先「展示計畫 → 等你核准 → 邊做邊回報」。任何時候你都可以喊停、補充、修正,這是它跟自動腳本最大的差別。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== USE CASES ============== -->
+<!-- ============== SCENARIOS(官方文件六大真實應用情境) ============== -->
+<section class="section section--alt" id="scenarios">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">真實場景</div>
+      <h2>六大真實應用情境,從指令到產出</h2>
+      <p class="lead">根據官方文件整理,涵蓋不同工作類型。每個情境拆解:Claude 具體會怎麼做、指令怎麼下、適合誰用、可以怎麼搭配其他功能。</p>
+    </div>
+
+    <div class="scn-list">
+
+      <div class="scn-row reveal">
+        <div class="scn-num"><span>01</span><div class="scn-ic">📂</div></div>
+        <div class="scn-body">
+          <h3>資料夾自動整理</h3>
+          <p>雜亂的 Downloads 資料夾是許多人的痛點。只要對 Cowork 說一句話,它就能在幾分鐘內處理完幾百個檔案,並告訴你它動了哪些東西。面對上百個雜亂檔名,它會先用樣本分析命名規則,提出分類方案讓你核准,批次處理時保留原始檔備份。</p>
+          <div class="scn-prompt">整理 Downloads 資料夾,依照檔案類型分類,重新命名為 YYYY-MM-DD 格式,輸出一份整理清單</div>
+          <div class="scn-fit"><strong>適合誰:</strong>有大量截圖、PDF 收據、散落文件,或需要定期整理的使用者</div>
+          <div class="scn-tip"><span>💡</span><div>這類定期整理工作可搭配<a href="#features">排程功能</a>,每週自動執行一次,不用再手動觸發。</div></div>
+        </div>
+      </div>
+
+      <div class="scn-row reveal">
+        <div class="scn-num"><span>02</span><div class="scn-ic">🔬</div></div>
+        <div class="scn-body">
+          <h3>研究報告自動生成</h3>
+          <p>想了解某個主題,傳統做法是自己搜尋、讀文章、整理重點、撰寫摘要。Cowork 可以幫你一次完成整條流程:</p>
+          <div class="scn-flow"><span>聯網搜尋最新資訊</span><i>→</i><span>彙整多個來源</span><i>→</i><span>依指定架構輸出 Word 報告</span><i>→</i><span>附上下一步行動建議</span></div>
+          <div class="scn-fit"><strong>適合誰:</strong>需要定期追蹤產業動態的行銷人員、研究人員,或需要快速了解新領域的決策者</div>
+        </div>
+      </div>
+
+      <div class="scn-row reveal">
+        <div class="scn-num"><span>03</span><div class="scn-ic">📊</div></div>
+        <div class="scn-body">
+          <h3>Excel 資料分析與視覺化</h3>
+          <p>把原始數據(CSV、截圖、PDF 表格)丟進 Inbox 資料夾,告訴 Claude 你想分析什麼,它能輸出含公式、條件式格式、圖表的完整 Excel 檔案。不同於一般 AI 只輸出純文字建議,Cowork 產出的是可以直接編輯、繼續使用的真實檔案。票據報帳就是典型例子:它會用 OCR 辨識收據截圖的店家、金額、日期、稅額,按月份分頁,最後加上 SUMIFS 公式與總額。</p>
+          <div class="scn-tip"><span>📌</span><div>官方特別強調:產出的試算表包含 <strong>working VLOOKUP、conditional formatting、multiple tabs</strong>,而不是需要人工修復的半成品。</div></div>
+        </div>
+      </div>
+
+      <div class="scn-row reveal">
+        <div class="scn-num"><span>04</span><div class="scn-ic">🎞️</div></div>
+        <div class="scn-body">
+          <h3>簡報從筆記到成品</h3>
+          <p>把散落的會議筆記、語音備忘錄、手寫大綱丟進資料夾,Cowork 能分析內容、規劃架構、輸出 PowerPoint 簡報。你可以指定頁數、風格、每頁要強調的重點,它會照著做;搭配 <a href="#setup">_context/ 內預先寫好的樣式偏好</a>,字型與配色還能維持品牌一致。</p>
+          <div class="scn-tip"><span>💡</span><div>進階玩法:讓 Cowork 準備結構化大綱,再丟進 <strong>Gamma</strong> 生成視覺效果更豐富的簡報,兩個工具各司其職。</div></div>
+        </div>
+      </div>
+
+      <div class="scn-row reveal">
+        <div class="scn-num"><span>05</span><div class="scn-ic">🔌</div></div>
+        <div class="scn-body">
+          <h3>連接外部工具自動化工作流</h3>
+          <p>透過 <a href="#features">Connectors</a>,Cowork 可以連接 Google Drive、Gmail、Slack、Notion、Asana、DocuSign 等外部服務,把原本需要在多個平台之間人工切換的工作,壓縮成一個自然語言指令。例如:</p>
+          <div class="scn-flow"><span>從 Google Drive 讀取講師進度表</span><i>→</i><span>分析各講師卡在哪個階段</span><i>→</i><span>輸出含顏色標記的 Excel 追蹤報告</span><i>→</i><span>列出每位講師的優先跟進事項</span></div>
+          <div class="scn-fit"><strong>定位:</strong>跨工具整合是 Cowork 最強大的場景之一</div>
+        </div>
+      </div>
+
+      <div class="scn-row reveal">
+        <div class="scn-num"><span>06</span><div class="scn-ic">⏰</div></div>
+        <div class="scn-body">
+          <h3>排程例行任務全自動化</h3>
+          <p>每週固定重複的工作,可以用 <code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;">/schedule</code> 設定自動排程,你回來就有成品。例如:</p>
+          <div class="scn-flow"><span>每週一 09:00 觸發</span><i>→</i><span>掃描上週新增的檔案</span><i>→</i><span>生成週報</span><i>→</i><span>輸出到指定資料夾</span></div>
+          <div class="scn-fit"><strong>適合誰:</strong>需要定期彙整進度、追蹤數據、產出固定格式報告的工作角色</div>
+          <div class="scn-tip"><span>⚠️</span><div>前提條件:電腦保持開機、Claude Desktop 保持開啟,任務才會在排定時間自動執行。</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout reveal" style="margin-top:28px;max-width:880px;margin-inline:auto;">
+      <span class="ic">🌐</span>
+      <div><strong>延伸場景:</strong>搭配 Chrome 擴充與 Computer use,Cowork 還能直接操作瀏覽器與桌面軟體 — 填表單、擷取網站資料、處理沒有 API 的傳統系統。詳見<a href="#features">完整功能導覽</a>。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== ADVANCED CASES (from Notion) ============== -->
+<section class="section section--alt" id="advanced" style="border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">進階實戰範本</div>
+      <h2>7 組從真實工作流提煉的 Prompt 範本</h2>
+      <p class="lead">每組都是經過實測、可直接複製貼上的完整指令。點開任一張卡片,看適用情境、Prompt 全文、工作流程拆解、預期產出。</p>
+    </div>
+
+    <div class="adv-filters reveal" id="advFilters">
+      <button class="adv-chip active" data-cat="all">全部</button>
+      <button class="adv-chip" data-cat="productivity">🗂️ 生產力</button>
+      <button class="adv-chip" data-cat="marketing">📣 行銷</button>
+      <button class="adv-chip" data-cat="sales">💼 業務</button>
+      <button class="adv-chip" data-cat="automation">⚙️ 自動化</button>
+    </div>
+
+    <div class="adv-grid reveal" id="advGrid"></div>
+
+    <div class="callout info reveal" style="margin-top:32px;max-width:760px;margin-inline:auto;">
+      <span class="ic">📋</span>
+      <div><strong>使用方式:</strong>點開任一卡片 → 切到「Prompt 全文」分頁 → 按「複製」按鈕 → 貼進你的 Claude Cowork 對話框。記得依你的實際資料夾路徑、Notion 連結、品牌偏好做替換。</div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal container (single, reused) -->
+<div class="adv-modal" id="advModal" role="dialog" aria-modal="true" aria-labelledby="advModalTitle">
+  <div class="adv-modal-overlay" id="advModalOverlay"></div>
+  <div class="adv-modal-body" id="advModalBody"></div>
+</div>
+
+<!-- ============== PREREQ ============== -->
+<section class="section" id="prereq">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">出發前確認</div>
+      <h2>使用前需要準備什麼?</h2>
+      <p class="lead">不需要寫程式,但有幾個基本條件要先確認。Cowork 是桌面 App,並非所有方案都包含。</p>
+    </div>
+    <div class="prereq-grid reveal">
+      <div class="prereq-card">
+        <div class="ic">💻</div>
+        <h4>作業系統</h4>
+        <p>macOS 或 Windows,需下載桌面版 App</p>
+      </div>
+      <div class="prereq-card">
+        <div class="ic">💳</div>
+        <h4>訂閱方案</h4>
+        <p>Pro($20/月) 以上,免費版不支援</p>
+      </div>
+      <div class="prereq-card">
+        <div class="ic">🌐</div>
+        <h4>網路連線</h4>
+        <p>整個工作過程需保持連線</p>
+      </div>
+      <div class="prereq-card">
+        <div class="ic">⚡</div>
+        <h4>App 開啟狀態</h4>
+        <p>關閉應用後任務不會繼續執行</p>
+      </div>
+    </div>
+    <div class="callout reveal" style="margin-top:24px;max-width:760px;margin-inline:auto;">
+      <span class="ic">📥</span>
+      <div>從官方下載頁取得安裝程式:<a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a>。Cowork 任務消耗用量配額較多,複雜多步驟任務可能相當於數十則一般訊息的額度。</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SETUP STEPS ============== -->
+<section class="section section--alt" id="setup">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">核心教學</div>
+      <h2>六步驟,把空白工作空間調教成你的 AI 助理</h2>
+      <p class="lead">完成這六步,你才算「真的開始用 Cowork」。每一步都附完整可複製的設定範本與檔案內容。</p>
+    </div>
+
+    <div class="steps-wrap">
+      <div class="steps-nav reveal" id="stepsNav"></div>
+      <div class="step-panel reveal" id="stepPanel"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== SAFETY ============== -->
+<section class="section" id="safety">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">安全與信任</div>
+      <h2>給 AI 存取電腦檔案,真的安全嗎?</h2>
+      <p class="lead">Anthropic 內建了多層保護,但仍有兩個你必須認識的風險。了解界線,你才能放心委派任務。</p>
+    </div>
+    <div class="safety-grid reveal">
+      <div class="safety-col ok">
+        <h3>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          已內建的保護
+        </h3>
+        <ul class="safety-list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div><strong>沙箱化存取</strong>:Claude 只能存取你指定的資料夾,無法讀取電腦其他位置。</div></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div><strong>刪除前先問</strong>:任何破壞性操作(刪檔、覆蓋)都會先要你確認。</div></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div><strong>計畫預覽</strong>:執行複雜任務前先列出每一步,等你核准。</div></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><div><strong>本地儲存</strong>:對話與檔案紀錄存在本機,不會上傳第三方伺服器。</div></li>
+        </ul>
+      </div>
+      <div class="safety-col risk">
+        <h3>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          你仍要警覺的風險
+        </h3>
+        <ul class="safety-list">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div><strong>Prompt Injection</strong>:處理外部資料(網頁、PDF)時,惡意指令可能藏在內容中,誘導 Claude 做出意外動作。</div></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div><strong>指令模糊</strong>:模糊或多解的指令可能導致意外結果。提示越具體越安全。</div></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div><strong>用量配額</strong>:複雜任務消耗的訊息額度可達一般對話的數十倍,計畫好優先順序。</div></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div><strong>測試時用備份</strong>:首次跑新流程,先用複製的檔案,確認結果再對正本動手。</div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== PRICING ============== -->
+<section class="section section--alt" id="pricing">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">方案與費用</div>
+      <h2>哪一個方案能用 Cowork?</h2>
+      <p class="lead">Cowork 不在免費版內。Pro 是最便宜的入口,Team 與 Enterprise 多了組織管理功能。</p>
+    </div>
+    <div class="price-table reveal">
+      <div class="price-row">
+        <div>方案</div><div>月費</div><div>Cowork 支援</div><div>適合對象</div>
+      </div>
+      <div class="price-row">
+        <div data-lbl="方案" class="price-name">Free</div>
+        <div data-lbl="月費" class="price-amount">$0</div>
+        <div data-lbl="Cowork"><span class="cowork-check no">✕</span></div>
+        <div data-lbl="適合對象" class="muted">試用 Chat,不含 Cowork</div>
+      </div>
+      <div class="price-row featured">
+        <div data-lbl="方案" class="price-name">Pro <span class="tag">推薦入門</span></div>
+        <div data-lbl="月費" class="price-amount">$20<small>/月</small></div>
+        <div data-lbl="Cowork"><span class="cowork-check yes">✓</span></div>
+        <div data-lbl="適合對象" class="muted">個人知識工作者</div>
+      </div>
+      <div class="price-row">
+        <div data-lbl="方案" class="price-name">Max</div>
+        <div data-lbl="月費" class="price-amount">$100–$200<small>/月</small></div>
+        <div data-lbl="Cowork"><span class="cowork-check yes">✓</span></div>
+        <div data-lbl="適合對象" class="muted">高用量重度用戶</div>
+      </div>
+      <div class="price-row">
+        <div data-lbl="方案" class="price-name">Team</div>
+        <div data-lbl="月費" class="price-amount">$25<small>/人/月</small></div>
+        <div data-lbl="Cowork"><span class="cowork-check yes">✓</span></div>
+        <div data-lbl="適合對象" class="muted">小團隊共用工作流</div>
+      </div>
+      <div class="price-row">
+        <div data-lbl="方案" class="price-name">Enterprise</div>
+        <div data-lbl="月費" class="price-amount">洽詢</div>
+        <div data-lbl="Cowork"><span class="cowork-check yes">✓</span></div>
+        <div data-lbl="適合對象" class="muted">用量管理、SSO、合規</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== AUDIENCE ============== -->
+<section class="section" id="audience">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">是不是你的菜?</div>
+      <h2>適合誰用、不適合誰用</h2>
+      <p class="lead">Cowork 不是萬靈丹。看看你是不是它的甜蜜點。</p>
+    </div>
+    <div class="aud-grid reveal">
+      <div class="aud-col">
+        <h3><span style="color:var(--green);font-size:22px;">👍</span> 適合使用者</h3>
+        <ul>
+          <li>每週需定期產出相似格式文件的工作者</li>
+          <li>管理多個專案、頻繁切換脈絡的人</li>
+          <li>習慣用文字整理、不擅長排版的人</li>
+          <li>需追蹤特定議題或客戶的業務研究人員</li>
+          <li>願意花一次時間建立 SOP,長期享受成果的人</li>
+        </ul>
+      </div>
+      <div class="aud-col">
+        <h3><span style="color:var(--red);font-size:22px;">🤔</span> 可能不適合</h3>
+        <ul>
+          <li>需要多台裝置間頻繁切換的使用者</li>
+          <li>對輸出品質要求極高、零容忍錯誤的場合</li>
+          <li>處理單次性、無重複性的雜事</li>
+          <li>不願意建立 <code style="background:var(--bg-alt);padding:1px 6px;border-radius:4px;font-size:13px;">_context</code> 與 <code style="background:var(--bg-alt);padding:1px 6px;border-radius:4px;font-size:13px;">CLAUDE.md</code> 規則的人</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FAQ ============== -->
+<section class="section section--alt" id="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="kicker">常見問題</div>
+      <h2>還在猶豫?這幾個問題大家都問</h2>
+      <p class="lead">點擊任一題目展開答案。</p>
+    </div>
+    <div class="faq-list reveal" id="faqList"></div>
+  </div>
+</section>
+
+<!-- ============== CTA ============== -->
+<section class="section">
+  <div class="container">
+    <div class="cta-section reveal">
+      <h2>下一步:今天就跑一個 Cowork 任務</h2>
+      <p>把這份教學打開、跟著六步驟設定一次。把這週最繁瑣、最重複的一項工作交給 Claude,然後把學到的補進 <code style="background:var(--bg-alt);padding:2px 8px;border-radius:6px;font-size:14px;">lessons-learned.md</code>。一週後,你就會擁有一個真正屬於你的 AI 工作夥伴。</p>
+      <div class="cta-actions">
+        <a class="btn btn--primary" href="https://claude.ai/download" target="_blank" rel="noopener">
+          下載 Claude 桌面版
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </a>
+        <a class="btn btn--dark" href="#setup">回到六步驟教學</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand">
+          <span class="brand-mark">C</span>
+          <span>Claude Cowork 互動教學</span>
+        </div>
+        <p>非官方繁體中文教學頁面。內容整理自 Anthropic 官方產品頁與第三方教學資源,僅供學習用途。</p>
+      </div>
+      <div>
+        <h5>章節導覽</h5>
+        <ul>
+          <li><a href="#what">概念入門</a></li>
+          <li><a href="#demo">介面 Demo</a></li>
+          <li><a href="#scenarios">應用情境</a></li>
+          <li><a href="#setup">六步驟設定</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>進階主題</h5>
+        <ul>
+          <li><a href="#safety">安全機制</a></li>
+          <li><a href="#pricing">價格方案</a></li>
+          <li><a href="#audience">適合誰用</a></li>
+          <li><a href="#faq">常見問題</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>官方資源</h5>
+        <ul>
+          <li><a href="https://claude.ai" target="_blank" rel="noopener">Claude 官網 ↗</a></li>
+          <li><a href="https://claude.ai/download" target="_blank" rel="noopener">下載桌面版 ↗</a></li>
+          <li><a href="https://claude.com/product/cowork" target="_blank" rel="noopener">Cowork 產品頁 ↗</a></li>
+          <li><a href="https://startingedu.com/claude-cowork/" target="_blank" rel="noopener">原文教學 ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>© 2026 Claude Cowork 教學頁面 · 內容彙整 · 非 Anthropic 官方產品</div>
+      <div>Built with ♥ for knowledge workers in Taiwan</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============== Theme Toggle ============== */
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const sunSVG = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>';
+const moonSVG = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  themeIcon.innerHTML = t === 'dark' ? sunSVG : moonSVG;
+  try { localStorage.setItem('cowork-theme', t); } catch (e) {}
+}
+const savedTheme = (() => { try { return localStorage.getItem('cowork-theme'); } catch (e) { return null; } })();
+applyTheme(savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+themeToggle.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+
+/* ============== Mobile Menu ============== */
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+/* ============== Scroll Progress ============== */
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const h = document.documentElement;
+  const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  progressBar.style.width = scrolled + '%';
+}, { passive: true });
+
+/* ============== Reveal on scroll ============== */
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+/* ============== Compare Tabs (filter highlight) ============== */
+const tabs = document.querySelectorAll('.tab');
+tabs.forEach(t => t.addEventListener('click', () => {
+  tabs.forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  const k = t.dataset.tab;
+  document.querySelectorAll('.compare-card li').forEach(li => {
+    if (k === 'all' || li.dataset.tag === k) {
+      li.style.opacity = '1'; li.style.fontWeight = (k === 'all' ? '' : '600');
+    } else {
+      li.style.opacity = '0.35'; li.style.fontWeight = '';
+    }
+  });
+}));
+
+/* ============== Setup Steps ============== */
+const steps = [
+  {
+    title: '授權工作資料夾',
+    meta: 'Step 1',
+    pill: '基礎建設',
+    lead: '在桌面建一個 Claude-workspace 資料夾,告訴 Claude 它的工作範圍只到這裡。',
+    content: `
+      <p>第一步:在桌面建立資料夾,然後在 Claude Cowork 對話框輸入下面這段指令,授權它存取。</p>
+      <p>Claude 會用 <code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;">request_cowork_directory</code> 工具開啟系統授權對話框,選定後就只能在這裡讀寫。</p>
+      $CODE$
+      <div class="callout"><span class="ic">📍</span><div><strong>為什麼選桌面?</strong>方便隨時看到、拖檔案,也不會跟雲端同步資料夾(iCloud / OneDrive)搶寫入。</div></div>
+    `,
+    code: { lang: 'prompt 範例', body: '請使用 request_cowork_directory 工具,\n讓我授權你存取 ~/Desktop/Claude-workspace。\n這會是你之後的預設工作空間。' }
+  },
+  {
+    title: '建立資料夾結構',
+    meta: 'Step 2',
+    pill: '骨架',
+    lead: '工作空間裡固定三個資料夾,各司其職。讓 Claude 知道東西該擺哪。',
+    content: `
+      <p>在 Claude-workspace 底下建立以下三個子資料夾:</p>
+      <ul>
+        <li><strong>_context/</strong> — 個人設定、規則、記憶檔案(底線開頭代表系統用)</li>
+        <li><strong>projects/</strong> — 各個長期專案,每個專案一個子資料夾</li>
+        <li><strong>outputs/</strong> — 一次性產出(報告、Excel、PPT)</li>
+      </ul>
+      $CODE$
+      <p>直接複製上面這段給 Claude,它會幫你建好。</p>
+    `,
+    code: { lang: 'prompt 範例', body: '在工作空間根目錄建立以下三個資料夾:\n- _context/\n- projects/\n- outputs/\n\n建好後請列出資料夾結構給我確認。' }
+  },
+  {
+    title: '建立兩個記憶檔案',
+    meta: 'Step 3',
+    pill: '核心步驟',
+    lead: 'about-me.md 讓 Claude 認識你,lessons-learned.md 讓它從錯誤中學習。這是長期協作的關鍵。',
+    content: `
+      <p>在 <code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;">_context/</code> 底下建立兩個 Markdown 檔。</p>
+      <h4>about-me.md(個人檔案)</h4>
+      $CODE1$
+      <h4>lessons-learned.md(錯誤備忘錄)</h4>
+      $CODE2$
+      <div class="callout info"><span class="ic">🧠</span><div><strong>關鍵心法:</strong>每次發現 Claude 做錯一件事,就把規則加進 lessons-learned.md。下一輪它就會自動避開。這是把它「調教」成你的個人助理的方法。</div></div>
+    `,
+    code1: { lang: '_context/about-me.md', body: '# 關於我\n\n## 基本資料\n- 稱呼:小明\n- 語言:繁體中文(台灣用語)\n- 職業:行銷顧問\n\n## 目前進行中\n- A 客戶月報(每月 25 號交)\n- B 產品上市計畫\n\n## 工作偏好\n- 文件:Markdown / Google Docs\n- 簡報:16:9, 深色背景, 少字多圖\n- 寫作風格:精簡、條列、避免行銷詞\n- 不要用 emoji 開頭' },
+    code2: { lang: '_context/lessons-learned.md', body: '# 過往教訓\n\n## 核心通病提醒\n- 我看過你「為了趕進度而省略關鍵步驟」,請務必照計畫做完\n- 我給的金額單位是新台幣,不要自動轉美元\n\n## 教訓記錄表\n| 日期 | 事件 | 改正規則 |\n|------|------|---------|\n| 2026-05-10 | 把 5 月誤寫成 May | 中文文件統一用「5 月」不寫英文月份 |\n| 2026-05-18 | 客戶名稱拼錯 | 客戶名稱必須對照 /projects/客戶清單.md |' }
+  },
+  {
+    title: '設定輸出格式偏好',
+    meta: 'Step 4',
+    pill: '視覺一致',
+    lead: '一次寫好排版規則,以後產出的 HTML / Word / PPT 全部統一樣式。',
+    content: `
+      <p>在 <code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;">_context/rules/</code> 建立 <code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;">html-preferences.md</code>:</p>
+      $CODE$
+      <p>之後 Claude 產出 HTML 頁面或預覽報告,會自動套用這套規則。</p>
+      <div class="callout"><span class="ic">🎨</span><div>同理可以再建 <code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;">excel-preferences.md</code>、<code style="background:var(--bg-alt);padding:2px 6px;border-radius:4px;">ppt-preferences.md</code> 等檔,把每種格式的偏好集中管理。</div></div>
+    `,
+    code: { lang: '_context/rules/html-preferences.md', body: '# HTML 輸出偏好\n\n## 視覺\n- 背景:白色 #FFFFFF\n- 主文字:深灰 #1a1a1a\n- 強調色:#DA7757(品牌色)\n- 字體:"Noto Sans TC", -apple-system, sans-serif\n\n## 排版\n- 最大內容寬度:720px\n- 行距 line-height:1.75\n- 段落間距:1em\n- 標題使用原生 h1 / h2 / h3,不額外加底線或色塊\n\n## 表格\n- 簡潔設計,只有水平分隔線\n- 不使用斑馬紋\n- 標題列加粗,不上色\n\n## 禁忌\n- 不要使用陰影過重的卡片\n- 不要使用漸層按鈕\n- 不要在文章中插入 emoji 圖示' }
+  },
+  {
+    title: '寫入 AI 工作守則',
+    meta: 'Step 5',
+    pill: '靈魂檔案',
+    lead: '在工作空間根目錄建立 CLAUDE.md。每次新對話 Claude 都會先讀它,等於你的「永久 system prompt」。',
+    content: `
+      <p>這份檔案決定 Claude 進入工作空間時的「第一印象」,把它當成新人入職手冊來寫。</p>
+      $CODE$
+      <div class="callout danger"><span class="ic">⚠️</span><div><strong>千萬不要遺漏「安全底線」段落。</strong>新使用者最常犯的錯是沒寫「刪檔前先問」,結果 Claude 為了整理覆蓋掉原始檔。</div></div>
+    `,
+    code: { lang: 'CLAUDE.md(工作空間根目錄)', body: '# Claude 工作守則\n\n## 每次對話開始要做的事\n- 讀取 _context/about-me.md\n- 讀取 _context/lessons-learned.md\n- 列出當前 projects/ 內的活躍專案\n- 用繁體中文跟我對話\n\n## 工作方式\n- 遇到不確定的需求,先問我,不要猜\n- 執行多步驟任務前,先列計畫等我核准\n- 完成每一步驟後給我簡短回報(一行即可)\n\n## 安全底線(絕對不可違反)\n- 刪除任何檔案前必須先問我\n- 覆蓋既有檔案前必須先問我\n- 不要對 _context/ 內的檔案做修改,除非我明確要求\n\n## 檔案存放規則\n- 長期專案 → projects/<專案代號>/\n- 一次性任務產出 → outputs/YYYY-MM-DD-<任務名>/\n- 暫存與草稿 → .tmp/(我會定期清理)\n\n## 輸出格式\n- HTML 套用 _context/rules/html-preferences.md\n- Excel 套用 _context/rules/excel-preferences.md\n- 不確定的格式先問我\n\n## 語言\n- 全部繁體中文(台灣用語)\n- 技術名詞保留英文\n- 不要把人名翻譯成中文' }
+  },
+  {
+    title: '確認環境並設為預設',
+    meta: 'Step 6',
+    pill: '收尾',
+    lead: '請 Claude 列出剛建好的全部檔案,確認沒漏。再把這個工作空間設為「下次開 Cowork 預設掛載」。',
+    content: `
+      <p>最後一步,跟 Claude 做一次「環境自我檢查」:</p>
+      $CODE$
+      <p>確認列出的清單跟你預期一致後,把這個工作空間在 Cowork 設定中標記為「預設」,以後開 App 就會自動掛載。</p>
+      <div class="callout info"><span class="ic">✅</span><div><strong>恭喜!</strong>到這一步,你已經有一個「會記得你是誰、知道規則、有資料夾骨架」的 AI 工作夥伴。下個任務:把這週最繁瑣的工作交給它。</div></div>
+    `,
+    code: { lang: 'prompt 範例', body: '請列出 Claude-workspace 目前所有資料夾與檔案,\n並用一段話總結你從 CLAUDE.md、about-me.md、\nlessons-learned.md 學到的我的工作偏好。\n\n確認沒問題後,請把這個工作空間記為預設,\n之後我打開 Cowork 就直接進這裡。' }
+  }
+];
+
+const stepsNav = document.getElementById('stepsNav');
+const stepPanel = document.getElementById('stepPanel');
+
+steps.forEach((s, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'step-nav-item' + (i === 0 ? ' active' : '');
+  btn.dataset.idx = i;
+  btn.innerHTML = `
+    <span class="step-num">${i + 1}</span>
+    <div>
+      <div class="meta">${s.meta}</div>
+      <div class="title">${s.title}</div>
+    </div>
+  `;
+  btn.addEventListener('click', () => renderStep(i));
+  stepsNav.appendChild(btn);
+});
+
+function renderStep(i) {
+  document.querySelectorAll('.step-nav-item').forEach(b => b.classList.toggle('active', +b.dataset.idx === i));
+  const s = steps[i];
+  let content = s.content;
+  if (s.code) {
+    content = content.replace('$CODE$', codeBlock(s.code.lang, s.code.body));
+  }
+  if (s.code1) content = content.replace('$CODE1$', codeBlock(s.code1.lang, s.code1.body));
+  if (s.code2) content = content.replace('$CODE2$', codeBlock(s.code2.lang, s.code2.body));
+
+  stepPanel.innerHTML = `
+    <div class="step-panel-header">
+      <div class="pill">${s.pill}</div>
+      <h3>第 ${i + 1} 步 · ${s.title}</h3>
+      <p class="lead">${s.lead}</p>
+    </div>
+    <div class="step-content">${content}</div>
+    <div style="display:flex;gap:10px;margin-top:30px;padding-top:24px;border-top:1px solid var(--border);">
+      ${i > 0 ? `<button class="btn btn--ghost" onclick="renderStep(${i - 1})">← 上一步</button>` : ''}
+      ${i < steps.length - 1 ? `<button class="btn btn--primary" onclick="renderStep(${i + 1})" style="margin-left:auto;">下一步:${steps[i + 1].title} →</button>` : `<a class="btn btn--primary" href="#cta" style="margin-left:auto;">完成設定 →</a>`}
+    </div>
+  `;
+  bindCopyButtons();
+}
+function codeBlock(lang, body) {
+  const id = 'c' + Math.random().toString(36).slice(2, 8);
+  const escaped = body.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return `<div class="code-block">
+    <div class="code-head">
+      <span>${lang}</span>
+      <button class="copy-btn" data-target="${id}">複製</button>
+    </div>
+    <pre id="${id}">${escaped}</pre>
+  </div>`;
+}
+function bindCopyButtons() {
+  document.querySelectorAll('.copy-btn').forEach(b => {
+    if (b.dataset.bound) return; b.dataset.bound = '1';
+    b.addEventListener('click', () => {
+      const t = document.getElementById(b.dataset.target);
+      if (!t) return;
+      navigator.clipboard.writeText(t.innerText).then(() => {
+        b.textContent = '已複製 ✓'; b.classList.add('copied');
+        setTimeout(() => { b.textContent = '複製'; b.classList.remove('copied'); }, 1600);
+      });
+    });
+  });
+}
+renderStep(0);
+window.renderStep = renderStep;
+
+/* ============== FAQ ============== */
+const faqs = [
+  { q: '我用 Free 方案可以用 Cowork 嗎?', a: '不行。Cowork 是進階功能,需要 Pro($20/月)以上方案。Free 只能用 Chat 在瀏覽器聊天。' },
+  { q: 'Cowork 跟 Chat 最大差別在哪?', a: 'Chat 是「給建議與可下載檔案」,你還是要手動把檔案存下來、開來看;Cowork 是「直接完成任務並寫進你的資料夾」,不用手動搬資料。簡單說:Chat 是顧問,Cowork 是同事。' },
+  { q: '它真的可以存取我的電腦檔案?安全嗎?', a: '只能存取你授權的單一資料夾,無法看到其他地方。刪檔、覆蓋前都會問你。對話紀錄存在本機,不上傳第三方。但仍要警覺 Prompt Injection 風險(惡意指令藏在你讀進來的網頁、PDF 內)。' },
+  { q: '我把 App 關掉,任務還會繼續跑嗎?', a: '不會。Cowork 是在你的本機跑的,App 關閉、電腦睡眠都會中斷。長時間任務請保持開啟,或拆成多次執行。' },
+  { q: '任務跑到一半卡住怎麼辦?', a: '直接按停止重新下指令,或請 Claude「從上次中斷的地方繼續」。如果卡住的是太大的任務,拆成「一次處理 10 個」這種小批次會穩定很多。' },
+  { q: '我要選 Cowork、Chat 還是 Claude Code?', a: '依場景判斷:日常問答用 Chat;有寫程式、操作 codebase 的需求用 Code;需要操作本機檔案、產出 Office 文件、跑多步驟工作流用 Cowork。三者帳號互通。' },
+  { q: '用量配額會不會很快被吃掉?', a: '會。Cowork 多步驟任務一次消耗的訊息額度可達一般對話的數十倍。建議把長期重複的工作流寫進 CLAUDE.md,讓每次新任務直接從穩定流程開始,減少摸索浪費。' },
+  { q: '我需要會寫程式才能用嗎?', a: '不需要。整套設定都是用「中文寫 Markdown 檔」完成的,沒有程式碼。你只要會用 Word 寫條列式規則就夠了。' },
+  { q: '它能連 Notion、Slack、Google Drive 嗎?', a: '可以,透過 MCP(Model Context Protocol)連接器。在 Cowork 的「連接器」設定裡授權後,就能讀寫這些外部服務。常用整合:Slack、Google Drive、Asana、Notion。' },
+  { q: '輸出的 Excel、PPT 真的可以直接用嗎?', a: '是真實的 .xlsx 與 .pptx 檔案,不是文字示意。Excel 會帶公式與格式化、PPT 會有版型與圖表。品質取決於你給的素材清不清楚與 _context/ 內的偏好規則寫得多細。' }
+];
+const faqList = document.getElementById('faqList');
+faqs.forEach((f, i) => {
+  const item = document.createElement('div');
+  item.className = 'faq-item';
+  item.innerHTML = `
+    <button class="faq-q">
+      <span>${f.q}</span>
+      <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-a"><div class="faq-a-inner">${f.a}</div></div>
+  `;
+  item.querySelector('.faq-q').addEventListener('click', () => item.classList.toggle('open'));
+  faqList.appendChild(item);
+});
+
+/* ============== DEMO SIMULATOR ============== */
+const scenes = {
+  receipt: {
+    tree: [
+      ['dir', '_context'],
+      ['file', 'about-me.md'],
+      ['file', 'lessons-learned.md'],
+      ['dir', 'projects'],
+      ['dir-active', '2026-05-receipts/'],
+      ['sub', '📷 IMG_0421.jpg'],
+      ['sub', '📷 IMG_0422.jpg'],
+      ['sub', '📷 ... (共 24 張)'],
+      ['dir', 'outputs'],
+      ['new-pending', '2026-05-報帳表.xlsx', 'new']
+    ],
+    chat: [
+      { role: 'user', text: '幫我把 /projects/2026-05-receipts 裡的收據整理成可以報帳的 Excel,要有店家、日期、金額、稅額、分類欄位,並加上公式總額。' },
+      { role: 'ai', text: '收到。我先掃描資料夾,共 24 張收據圖檔。準備執行以下計畫,請你核准。' },
+      { role: 'plan' },
+      { role: 'ai-delay', text: '已產出 outputs/2026-05-報帳表.xlsx,含 24 列、按類別 SUMIFS 加總、合計列在頂部。我已留一份備份在 .tmp/ 以防你想重跑。' }
+    ],
+    plan: [
+      'OCR 辨識每張收據(店家 / 日期 / 金額)',
+      '套用 lessons-learned.md:金額單位新台幣',
+      '建立分類:餐飲 / 交通 / 文具 / 其他',
+      '建立 Excel 並加入 SUMIFS 公式',
+      '輸出至 outputs/ 並備份至 .tmp/'
+    ]
+  },
+  report: {
+    tree: [
+      ['dir', '_context'],
+      ['file', 'about-me.md'],
+      ['dir-active', 'projects/Q2-report'],
+      ['sub', '📝 meeting-2026-04-12.md'],
+      ['sub', '📝 meeting-2026-05-03.md'],
+      ['sub', '📊 數據.csv'],
+      ['dir', 'outputs'],
+      ['new-pending', 'Q2-季報.docx', 'new']
+    ],
+    chat: [
+      { role: 'user', text: '把 projects/Q2-report/ 裡所有會議筆記 + 數據檔,整合成 Q2 季度報告 Word 文件。' },
+      { role: 'ai', text: '好的,我先讀完 8 份會議紀錄與數據檔。準備依下方計畫產出。' },
+      { role: 'plan' },
+      { role: 'ai-delay', text: '已完成 outputs/Q2-季報.docx,共 14 頁。已套用 html-preferences.md 的字型與排版規則。是否要我同時產出 PPT 版本?' }
+    ],
+    plan: [
+      '讀取 8 份會議筆記 .md',
+      '抽取每月重點 / 行動項目 / 風險',
+      '結合 數據.csv 數字',
+      '套用 _context/rules 排版',
+      '輸出 outputs/Q2-季報.docx'
+    ]
+  },
+  files: {
+    tree: [
+      ['dir-active', '~/Downloads(掃描範圍)'],
+      ['sub', '📄 524 個雜亂檔案'],
+      ['new-pending', '分類方案-A.md', 'new'],
+      ['new-pending', '分類方案-B.md', 'new']
+    ],
+    chat: [
+      { role: 'user', text: '幫我掃描 ~/Downloads,提出分類方案,先不要動原檔。' },
+      { role: 'ai', text: '掃描完成,共 524 個檔案。我抓 50 個樣本分析命名規則,準備提出三種分類方案讓你選。' },
+      { role: 'plan' },
+      { role: 'ai-delay', text: '已產出三個分類方案 md 檔供你選擇。原始檔完全沒動。確認方案後我才會開始批次重新命名,並把所有原檔備份到 .tmp/Downloads-backup/。' }
+    ],
+    plan: [
+      '掃描所有檔案(僅讀取)',
+      '抽 50 樣本分析命名規則',
+      '產出 3 種分類方案 md',
+      '等你核准',
+      '備份原檔後執行'
+    ]
+  },
+  slack: {
+    tree: [
+      ['dir', '_context'],
+      ['file', 'connectors.md'],
+      ['dir-active', 'projects/weekly-digest'],
+      ['sub', '🔌 MCP: Slack 已連線'],
+      ['new-pending', '2026-W21-週摘要.md', 'new']
+    ],
+    chat: [
+      { role: 'user', text: '幫我做這週(W21)的 Slack 重點摘要,涵蓋 #general、#product、#sales 三個頻道。' },
+      { role: 'ai', text: '已透過 MCP 連到 Slack,抓取三個頻道過去 7 天的訊息(共 487 則)。準備整理。' },
+      { role: 'plan' },
+      { role: 'ai-delay', text: '完成 outputs/2026-W21-週摘要.md。三個頻道各一段摘要 + 行動項目清單 + 待回覆 @你 的 8 則訊息。要不要直接傳到你的 Notion?' }
+    ],
+    plan: [
+      '透過 MCP 拉取 3 個頻道訊息',
+      '依主題自動分群',
+      '抓出提及你的 @ 訊息',
+      '列出未回覆需處理項目',
+      '輸出 md 並提示下一步'
+    ]
+  },
+  email: {
+    tree: [
+      ['dir', '_context'],
+      ['file', 'CLAUDE.md'],
+      ['dir-active', 'projects/daily-inbox'],
+      ['sub', '🔌 MCP: Gmail 已連線'],
+      ['new-pending', '2026-05-26-早報.md', 'new']
+    ],
+    chat: [
+      { role: 'user', text: '從明天起每天早上 8 點,自動檢查我的信箱,過濾廣告,把需要回覆的整理成早報。' },
+      { role: 'ai', text: '理解,這是一個排程任務。我會建立一個每日早報流程,並登記到排程。' },
+      { role: 'plan' },
+      { role: 'ai-delay', text: '已設定每日 08:00 執行。今天的測試早報已產出於 outputs/。包含:需立即回覆 3 封、本週要排會議 2 封、可略過 41 封。' }
+    ],
+    plan: [
+      '建立排程:每日 08:00',
+      '過濾廣告與通知信',
+      '分類:需回覆 / 待安排 / 略過',
+      '產出每日早報 md',
+      '若有緊急信即時通知'
+    ]
+  }
+};
+
+const fileTreeUl = document.getElementById('treeList');
+const chatArea = document.getElementById('chatArea');
+const planList = document.getElementById('planList');
+let activeScene = 'receipt';
+let demoTimers = [];
+function clearDemoTimers() { demoTimers.forEach(clearTimeout); demoTimers = []; }
+
+/* ---- Artifact 渲染器(純 CSS / SVG,無外部函式庫) ---- */
+function artExcel() {
+  const rows = [
+    ['05-03', '星巴克', '餐飲', '180'],
+    ['05-07', '台灣大車隊', '交通', '1,200'],
+    ['05-12', '誠品書店', '文具', '460'],
+    ['05-18', '全家便利商店', '餐飲', '95'],
+    ['05-21', '台灣高鐵', '交通', '1,490'],
+    ['05-25', '文具天堂', '文具', '320']
+  ];
+  const body = rows.map((r, i) => `<tr><td class="rownum">${i + 2}</td><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td class="num">${r[3]}</td></tr>`).join('');
+  return `<div class="xls">
+    <div class="xls-formula"><span class="cell-ref">D8</span><span class="fx">=SUM(D2:D7)  →  3,745</span></div>
+    <table class="xls-grid">
+      <tr><th></th><th>A · 日期</th><th>B · 店家</th><th>C · 類別</th><th>D · 金額</th></tr>
+      ${body}
+      <tr class="xls-total"><td class="rownum">8</td><td>合計</td><td></td><td></td><td class="num">3,745</td></tr>
+    </table>
+  </div>`;
+}
+function artChart() {
+  const data = [
+    { label: '餐飲', val: 275, color: '#DA7757' },
+    { label: '交通', val: 2690, color: '#5436DA' },
+    { label: '文具', val: 780, color: '#2f8a5f' }
+  ];
+  const max = 2690;
+  const bars = data.map((d, i) => {
+    const w = Math.max(6, Math.round(d.val / max * 190));
+    const y = 16 + i * 46;
+    return `<text x="0" y="${y + 15}" font-size="12" fill="#8a8a8a">${d.label}</text>
+      <rect x="48" y="${y}" width="${w}" height="24" rx="5" fill="${d.color}"><animate attributeName="width" from="0" to="${w}" dur="0.6s" fill="freeze"/></rect>
+      <text x="${48 + w + 8}" y="${y + 16}" font-size="11" fill="#8a8a8a">$${d.val.toLocaleString()}</text>`;
+  }).join('');
+  return `<div class="chart-wrap">
+    <svg viewBox="0 0 320 160" role="img" aria-label="各類別支出長條圖">${bars}</svg>
+    <div class="chart-cap">各類別支出佔比 · 總計 $3,745</div>
+  </div>`;
+}
+function artDoc() {
+  return `<div class="doc-page">
+    <h1>2026 第二季營運報告</h1>
+    <div class="doc-meta">行銷部 · 2026-06-30 · 共 14 頁</div>
+    <h2>一、本季摘要</h2>
+    <p>本季營收較上季成長 18%,主要動能來自新產品線上市與既有客戶回購率提升。</p>
+    <div class="doc-line w90"></div><div class="doc-line w70"></div>
+    <h2>二、關鍵指標</h2>
+    <div class="doc-line w80"></div><div class="doc-line w60"></div><div class="doc-line w90"></div>
+    <h2>三、下季計畫</h2>
+    <div class="doc-line w70"></div><div class="doc-line w80"></div>
+  </div>`;
+}
+const slideDeck = [
+  { kicker: 'Q2 REVIEW', title: '2026 第二季營運回顧', bullets: ['行銷部 · 季度策略簡報', '2026-06-30'] },
+  { kicker: 'GROWTH', title: '三大成長引擎', bullets: ['新產品線貢獻 +18% 營收', '既有客戶回購率達 64%', '社群導流轉換成長 2.3 倍'] },
+  { kicker: 'KPI', title: '目標達成率 102%', bullets: ['營收目標:達成 102%', '新客數:達成 95%', 'NPS:48 → 56'] }
+];
+function artSlide(idx) {
+  idx = idx || 0;
+  const s = slideDeck[idx];
+  const dots = slideDeck.map((_, i) => `<button class="slide-dot ${i === idx ? 'active' : ''}" data-slide="${i}" aria-label="第 ${i + 1} 頁"></button>`).join('');
+  return `<div class="slide-wrap">
+    <div class="slide">
+      <div class="s-kicker">${s.kicker}</div>
+      <h2>${s.title}</h2>
+      <ul>${s.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      <div class="slide-foot">${idx + 1} / 12</div>
+    </div>
+    <div class="slide-nav">${dots}</div>
+  </div>`;
+}
+function artDigest() {
+  return `<div class="digest">
+    <h3># 2026-W21 週摘要</h3>
+    <div class="digest-sec"><strong>#general · 142 則</strong><ul><li>辦公室搬遷確認 6/15</li><li>新人 onboarding 流程更新</li></ul></div>
+    <div class="digest-sec"><strong>#product · 208 則</strong><ul><li>v2.4 上線時程定 6/20</li><li>付款流程 bug 已修復</li></ul></div>
+    <div class="digest-sec"><strong>#sales · 137 則</strong><ul><li>Q2 達標 102% 🎉</li><li>3 筆大單待簽約</li></ul></div>
+    <div class="digest-sec"><strong>⚡ 待你回覆 · 8 則</strong><ul><li>@你 報價單確認 — 王經理</li><li>@你 簡報 review — 設計組</li></ul></div>
+  </div>`;
+}
+function artBriefing() {
+  return `<div>
+    <div class="brief-stats">
+      <div class="brief-stat"><b>3</b><span>需立即回覆</span></div>
+      <div class="brief-stat"><b>2</b><span>本週排會議</span></div>
+      <div class="brief-stat"><b>41</b><span>可略過</span></div>
+    </div>
+    <div class="digest">
+      <div class="digest-sec"><strong>🔴 需立即回覆</strong><ul><li>客戶 A:報價單今日截止</li><li>主管:週報補件</li><li>供應商:出貨確認</li></ul></div>
+      <div class="digest-sec"><strong>🟡 本週排會議</strong><ul><li>產品 sync(週四 14:00)</li><li>客戶 demo(週五 10:00)</li></ul></div>
+    </div>
+  </div>`;
+}
+function artTable() {
+  const rows = [
+    ['IMG_4821.jpg', '2026-Q1-發票-星巴克.jpg', '財務/發票'],
+    ['螢幕截圖 2026-03-02.png', '合約-ABC公司-簽署版.png', '合約'],
+    ['未命名/doc.pdf', '產品規格書-v3.pdf', '文件/規格'],
+    ['DCIM_0099.jpg', '活動現場-開幕式.jpg', '照片/活動']
+  ];
+  const body = rows.map(r => `<tr><td class="old">${r[0]}</td><td class="arr">→</td><td class="new">${r[1]}</td><td><span class="cat">${r[2]}</span></td></tr>`).join('');
+  return `<table class="cls-table">
+    <tr><th>原檔名</th><th></th><th>建議新檔名</th><th>分類</th></tr>
+    ${body}
+  </table>`;
+}
+
+const sceneArtifacts = {
+  receipt: { icon: '📊', name: '2026-05-報帳表.xlsx', views: [{ label: '試算表', render: artExcel }, { label: '分類圖表', render: artChart }] },
+  report: { icon: '📄', name: 'Q2-季報', views: [{ label: 'Word 文件', render: artDoc }, { label: 'PPT 簡報', render: function () { return artSlide(0); } }] },
+  files: { icon: '🗂️', name: '分類對照表', views: [{ label: '重新命名清單', render: artTable }] },
+  slack: { icon: '📝', name: '2026-W21-週摘要.md', views: [{ label: '摘要預覽', render: artDigest }] },
+  email: { icon: '📧', name: '2026-05-26-早報.md', views: [{ label: '早報預覽', render: artBriefing }] }
+};
+
+function bindSlideDots(scope) {
+  scope.querySelectorAll('.slide-dot').forEach(d => d.addEventListener('click', () => {
+    const i = +d.dataset.slide;
+    const host = d.closest('.artifact-body');
+    if (!host) return;
+    host.innerHTML = artSlide(i);
+    bindSlideDots(host);
+  }));
+}
+
+function appendArtifact(key) {
+  if (activeScene !== key) return;
+  const a = sceneArtifacts[key];
+  if (!a) return;
+  const card = document.createElement('div');
+  card.className = 'artifact-card';
+  const tabs = a.views.length > 1
+    ? `<div class="artifact-views">${a.views.map((v, i) => `<button class="artifact-view-tab ${i === 0 ? 'active' : ''}" data-vi="${i}">${v.label}</button>`).join('')}</div>`
+    : '';
+  card.innerHTML = `
+    <div class="artifact-head"><span class="a-ic">${a.icon}</span><span class="a-name">${a.name}</span><span class="a-badge">已產出</span></div>
+    ${tabs}
+    <div class="artifact-body"></div>
+  `;
+  chatArea.appendChild(card);
+  const bodyEl = card.querySelector('.artifact-body');
+  function paint(i) { bodyEl.innerHTML = a.views[i].render(); bindSlideDots(bodyEl); }
+  paint(0);
+  card.querySelectorAll('.artifact-view-tab').forEach(t => t.addEventListener('click', () => {
+    card.querySelectorAll('.artifact-view-tab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    paint(+t.dataset.vi);
+  }));
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function renderTree(items) {
+  fileTreeUl.innerHTML = '';
+  items.forEach(([type, name, mark]) => {
+    const li = document.createElement('li');
+    if (type === 'dir') li.classList.add('dir');
+    if (type === 'dir-active') { li.classList.add('dir'); li.style.color = 'var(--accent)'; }
+    if (mark === 'new') li.classList.add('new');
+    let icon = '';
+    if (type === 'dir' || type === 'dir-active') {
+      icon = '<svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>';
+    } else if (type === 'file') {
+      icon = '<svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+    } else if (type === 'sub') {
+      li.style.paddingLeft = '32px';
+    } else if (type === 'new-pending') {
+      icon = '<span style="color:var(--accent);">✨</span>';
+    }
+    li.innerHTML = icon + ' ' + name;
+    fileTreeUl.appendChild(li);
+  });
+}
+
+function renderPlan(items) {
+  planList.innerHTML = '';
+  items.forEach((t, i) => {
+    const d = document.createElement('div');
+    d.className = 'plan-step';
+    d.innerHTML = `<span class="step-marker">${i + 1}</span><div>${t}</div>`;
+    planList.appendChild(d);
+  });
+}
+
+function pushChat(role, html) {
+  const b = document.createElement('div');
+  if (role === 'plan') {
+    b.className = 'chat-bubble ai';
+    b.innerHTML = `<span class="label">Claude</span>
+      <div class="plan-card"><h5>等待你核准 ✱</h5>${html}</div>`;
+  } else {
+    b.className = 'chat-bubble ' + (role === 'user' ? 'user' : 'ai');
+    b.innerHTML = `<span class="label">${role === 'user' ? '你' : 'Claude'}</span>${html}`;
+  }
+  chatArea.appendChild(b);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  return b;
+}
+
+function pushTyping() {
+  const b = document.createElement('div');
+  b.className = 'chat-bubble ai';
+  b.innerHTML = `<span class="label">Claude</span><span class="typing"><span></span><span></span><span></span></span>`;
+  chatArea.appendChild(b);
+  chatArea.scrollTop = chatArea.scrollHeight;
+  return b;
+}
+
+function runScene(key) {
+  activeScene = key;
+  const s = scenes[key];
+  chatArea.innerHTML = '';
+  renderTree(s.tree);
+  renderPlan(s.plan);
+  document.querySelectorAll('.plan-step').forEach(p => p.classList.remove('done', 'active'));
+
+  clearDemoTimers();
+  let delay = 200;
+  s.chat.forEach((m) => {
+    const t = setTimeout(() => {
+      if (activeScene !== key) return;
+      if (m.role === 'plan') {
+        const ul = '<ul>' + s.plan.map(p => `<li class="pending">${p}</li>`).join('') + '</ul>';
+        pushChat('plan', ul);
+      } else if (m.role === 'ai-delay') {
+        const typing = pushTyping();
+        const t2 = setTimeout(() => {
+          if (activeScene !== key) { typing.remove(); return; }
+          typing.remove();
+          pushChat('ai', m.text);
+          const stepsEls = document.querySelectorAll('.plan-step');
+          stepsEls.forEach((st, i) => {
+            const t3 = setTimeout(() => {
+              if (activeScene !== key) return;
+              stepsEls.forEach(x => x.classList.remove('active'));
+              st.classList.add('active');
+              if (i > 0) stepsEls[i - 1].classList.add('done');
+              if (i === stepsEls.length - 1) {
+                const t4 = setTimeout(() => { if (activeScene === key) st.classList.add('done'); }, 700);
+                demoTimers.push(t4);
+              }
+            }, i * 600);
+            demoTimers.push(t3);
+          });
+          const tA = setTimeout(() => appendArtifact(key), stepsEls.length * 600 + 1100);
+          demoTimers.push(tA);
+        }, 1300);
+        demoTimers.push(t2);
+      } else {
+        pushChat(m.role, m.text);
+      }
+    }, delay);
+    demoTimers.push(t);
+    delay += m.role === 'user' ? 400 : m.role === 'plan' ? 800 : m.role === 'ai-delay' ? 1200 : 700;
+  });
+}
+
+document.querySelectorAll('.demo-chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('.demo-chip').forEach(x => x.classList.remove('active'));
+  c.classList.add('active');
+  runScene(c.dataset.scene);
+}));
+runScene('receipt');
+
+/* ============== ADVANCED CASES (from Notion) ============== */
+const advancedCases = [
+  {
+    id: 'desktop-clean',
+    cat: 'productivity',
+    icon: '🗂️',
+    title: '桌面檔案整理(三階段)',
+    desc: '掃描雜亂資料夾,逐一辨識內容、建議檔名與分類,最後產出整體方案等你核准才動手。',
+    scenario: '你有一個塞了上百張截圖、PDF、雜亂下載檔的資料夾,想徹底重整但又怕誤刪重要檔案。這個 prompt 強制 Claude 走「先計畫、後執行」的三階段流程,讓你完全掌控破壞性動作前的最後決策。',
+    workflow: [
+      '第一階段 — 資料掃描:列出檔案總數、日期範圍、檔案類型分布',
+      '第二階段 — 逐一分析:辨識每份檔案內容,建議新檔名與歸類資料夾(或標記可刪)',
+      '第三階段 — 分類整理建議:將相似內容分組,規劃資料夾結構與可打包群組',
+      '提交完整整理計畫,等你核准後才真正動手'
+    ],
+    output: '一份結構化的「整理計畫」文件:每個檔案的建議新名稱、目標資料夾、刪除標記,以及整體分類結構。',
+    promptLang: 'Prompt · 整理桌面檔案',
+    prompt: `# 任務說明
+請協助我整理這個資料夾中的所有檔案。
+---
+## 第一階段:資料掃描與統計
+請先掃描整個資料夾,並提供以下資訊:
+- 📁 檔案/圖片總數
+- 📅 日期範圍(從最早建立或修改到最新)
+---
+## 第二階段:逐一分析
+針對每一個檔案,請提供:
+- 📌 內容辨識(它顯示或包含什麼)
+- 🏷 建議一個清楚且具描述性的檔名
+- 📂 建議歸類的資料夾名稱
+  - 或說明是否可刪除
+---
+## 第三階段:分類整理建議
+- 將相似或相關內容分組
+- 建議資料夾結構
+- 規劃可打包整合的檔案群組
+---
+## 重要要求
+在進行任何實際更改之前,
+請先提供完整整理計畫供我確認。`
+  },
+  {
+    id: 'deck-gen',
+    cat: 'marketing',
+    icon: '📊',
+    title: '行銷策略簡報(Deck)生成器',
+    desc: '把會議紀要、活動筆記、計畫文件,自動轉成可直接對外簡報的 .pptx 戰略演示文稿。',
+    scenario: '你手上有一堆零散的策略素材 — 會議紀要、研究筆記、活動企劃 —— 但客戶/老闆要的是一份精緻、有品牌感、結構清晰的簡報。這個 prompt 把 Claude 變成資深策略顧問,依「洞察 → 策略 → 行動 → 成果」的標準敘事架構產出。',
+    workflow: [
+      '第一步 — 深度閱讀:徹底吸收所有輸入材料,不遺漏隱含戰略意圖',
+      '第二步 — 萃取戰略主線:識別核心敘事、提煉關鍵訊息與數據支撐',
+      '第三步 — 建立簡報大綱:輸出幻燈片標題列表、每頁要點、敘事邏輯走向(先讓你確認)',
+      '第四步 — 生成完整 .pptx:套用模板、確保視覺層次、每頁聚焦不過載'
+    ],
+    output: '一份完整的 .pptx 檔,結構為「問題/機會 → 核心戰略 → 執行路徑 → KPI 衡量」,信息高度濃縮,達高階商務簡報水準。',
+    promptLang: 'Prompt · 行銷策略簡報生成器',
+    prompt: `你是一個專業的行銷策略簡報(Deck)生成器。
+你的任務是接收任何形式的輸入內容(如會議紀要、活動簡報、策略計畫或書面筆記),並將其轉化為一份:
+
+- 精緻美觀
+- 符合品牌識別
+- 結構清晰
+- 可直接對外簡報使用
+的專業戰略演示文稿。
+
+---
+# 🛠 工作流程
+
+## 第一步:深度閱讀與理解
+- 徹底閱讀所有輸入材料
+- 不遺漏隱含的戰略意圖
+- 區分核心資訊與次要資訊
+
+---
+
+## 第二步:萃取戰略主線
+- 識別核心戰略敘事(Strategic Narrative)
+- 提煉關鍵訊息與數據支撐
+- 明確問題、機會、解法與成果指標
+
+---
+
+## 第三步:建立簡報大綱
+
+在正式製作簡報前,必須先輸出:
+- 幻燈片標題列表
+- 每頁的核心要點
+- 敘事邏輯走向
+
+確認邏輯清晰後,再進入製作階段。
+
+---
+
+## 第四步:生成完整簡報檔
+
+- 根據模板生成完整的 .pptx 文件
+- 確保視覺層次清晰
+- 確保每頁信息聚焦、不過載
+- 保持品牌語氣與專業度
+
+---
+
+## 📊 若輸入為「簡報或策略計畫」
+
+請重新組織為標準戰略敘事結構:
+
+1. 問題 / 市場機會
+2. 核心戰略
+3. 執行路徑
+4. 衡量標準(KPI / 成效指標)
+
+確保邏輯由「洞察 → 策略 → 行動 → 成果」自然推進。
+
+---
+
+# ✨ 輸出標準
+
+- 結構清晰、專業有力
+- 信息高度濃縮
+- 每頁都能獨立成為可展示內容
+- 整體呈現達到高階商務簡報水準`
+  },
+  {
+    id: 'gmail-icp',
+    cat: 'sales',
+    icon: '📧',
+    title: 'Gmail 客戶輪廓深度分析',
+    desc: '進你的 Gmail 掃描所有 Zoom 連線紀錄,自動產出「理想客戶輪廓報告」與「洞察儀表板」。',
+    scenario: '做 1-on-1 諮詢、銷售、教練的人,Zoom 邀請信、會議紀錄裡藏著最珍貴的客戶洞察 — 痛點、夢想、目標、重複行為模式。靠人腦看完幾百封信再萃取規律不現實,這個 prompt 把整套工作外包給 Cowork。',
+    workflow: [
+      '進入 Gmail,搜尋並讀取所有 Zoom 連線相關郵件',
+      '萃取四維度洞察:痛點、夢想/渴望、核心目標、重複行為模式',
+      '彙整成「理想客戶輪廓(ICP)報告」',
+      '視覺化為「客戶洞察儀表板」',
+      '根據洞察提出「該發送什麼內容、如何幫他們克服痛點、加速達成目標」的行動建議'
+    ],
+    output: '兩份檔案:理想客戶輪廓報告(.docx 或 .md)+ 客戶洞察儀表板(.html 或 dashboard)。附帶可立即執行的內容主題與客戶溝通策略清單。',
+    promptLang: 'Prompt · Gmail 客戶輪廓分析',
+    prompt: `進入我的gmail,查看一下我所有的zoom連線的郵件資料。
+請閱讀所有內容,整合資訊,並產出:
+1. 一份完整的「理想客戶輪廓報告」
+2. 一個清晰的「客戶洞察儀表板」
+請從郵件中分析並提取:
+- 他們的主要痛點
+- 他們的夢想與渴望
+- 他們的核心目標
+- 重複出現的問題與行為模式
+最後,根據上述洞察,建議:
+- 我應該發送什麼類型的資訊與內容
+- 如何幫助他們克服痛點
+- 如何協助他們更快達成目標
+在開始分析前,請先簡述你的處理計畫。`
+  },
+  {
+    id: 'yt-studio',
+    cat: 'marketing',
+    icon: '▶️',
+    title: 'YouTube Studio 90 天數據分析',
+    desc: 'Claude 開 Chrome 進 YT Studio,抓 90 天流量與參與度,下載原始檔 + 產出含趨勢預測的分析報告。',
+    scenario: '你經營 YouTube 頻道,想定期看「過去 90 天哪些影片真正帶來成長、流量來源變化、留存率趨勢」,但每次手動點 Analytics → 下載 CSV → 開 Excel 整理太麻煩。把這套 prompt 排程化,週末自動跑一次。',
+    workflow: [
+      'Claude 透過 Chrome 自動進入 YouTube Studio Analytics 頁面',
+      '提取過去 90 天的「流量來源」與「參與度」數據報表',
+      '下載原始 CSV 報表存到本機工作資料夾',
+      '針對流量趨勢、觀眾留存與核心指標做深入分析',
+      '產出含趨勢預測與關鍵洞察的報告,連同原始數據一併歸檔'
+    ],
+    output: '一份分析報告(.md 或 .docx)+ 對應的原始數據 CSV,放在你的工作資料夾。含「成長最強影片排行」「流量來源變化」「留存曲線」「下個月優先實驗」建議。',
+    promptLang: 'Prompt · YouTube Studio 數據分析',
+    prompt: `請使用 Google Chrome 瀏覽器,進入我的 YouTube 工作室 (YouTube Studio) 數據分析頁面。
+提取過去 3 個月(90 天)的「流量來源 (Traffic source)」與「參與度 (Engagement)」數據。
+請下載這些數據報表,並針對流量趨勢、觀眾留存與核心關鍵指標進行深入分析,
+產出一份包含趨勢預測與關鍵洞察的報告。
+最後,將原始數據與報告一併儲存至我的工作資料夾。`
+  },
+  {
+    id: 'notion-fill',
+    cat: 'automation',
+    icon: '🔗',
+    title: 'Notion × 瀏覽器同步填表',
+    desc: '從 Notion 內的競品頻道清單出發,跨進 YouTube 抓影片數據,再回頭直接寫入原 Notion 資料庫欄位。',
+    scenario: '你有一個 Notion 資料庫,裡面列了一堆 YouTube 競品頻道,空白欄位等著被填(影片標題、播放數、發布日、借鑑度...)。手動一個個複製貼上要好幾小時。Cowork 能跨 App 串聯:讀 Notion → 跳 YouTube → 抓資料 → 寫回 Notion。',
+    workflow: [
+      '打開指定的 Notion 頁面/資料庫',
+      '擷取所有 YouTube 競爭對手頻道連結',
+      '逐一進入頻道,優先選擇近 30-60 天、播放數高於平均、結構可借鑑的影片',
+      '直接在原 Notion 資料庫填入欄位:影片標題(可優化為繁體中文)、播放次數、發布日期、借鑑度(1-5 分)、影片網址',
+      '已有資料的欄位只補空白,不刪除既有內容'
+    ],
+    output: '原始 Notion 資料庫被直接填滿(不是另寫報告),所有空欄位內容到位、格式一致、借鑑度標分。可立即拿來開選題會議。',
+    promptLang: 'Prompt · Notion × 瀏覽器串聯',
+    prompt: `# 任務目標(請直接執行)
+
+請打開以下 Notion 頁面,並直接在該資料庫中填寫所有空白欄位內容,而不是輸出報告。
+
+[在此插入 Notion 連結]
+
+---
+
+# 執行步驟(請依序操作)
+
+## 1️⃣ 擷取競爭對手頻道
+- 從頁面中找到所有 YouTube 競爭對手頻道連結
+- 逐一進入頻道
+
+## 2️⃣ 選取合適影片
+優先選擇:
+- 最近 30–60 天發布的影片
+- 播放次數明顯高於平均值的影片
+- 具備可借鑑標題或內容結構的影片
+
+---
+
+# 3️⃣ 直接填寫資料庫欄位
+
+請在原 Notion 表格中填入:
+
+- 影片標題(可優化為繁體中文版本)
+- 播放次數
+- 發布日期
+- 借鑑度(1–5 分,依內容可模仿價值評分)
+- 影片網址
+
+⚠️ 若欄位已有資料,請補齊空白欄位,不要刪除既有內容。
+
+---
+
+# 操作原則
+
+- 不要只整理文字報告
+- 必須直接更新資料庫內容
+- 填寫內容需精簡、專業
+- 保持欄位格式一致`
+  },
+  {
+    id: 'multi-distrib',
+    cat: 'marketing',
+    icon: '📣',
+    title: '一稿多平台分發(5 種格式)',
+    desc: '一段 YouTube 長影片轉錄稿,自動拆成 YT 貼文、Thread、Email、Shorts 腳本、IG 貼文五份檔。',
+    scenario: '創作者最大的時間黑洞:錄完長影片後,還要為每個平台改寫一次。這個 prompt 讓 Claude 一次產出 5 個平台版本,每個都遵循該平台的語氣、結構、互動慣性,直接存成獨立檔案。',
+    workflow: [
+      '讀取資料夾內 YouTube 長影片的轉錄稿',
+      '依各平台特性改寫語氣與結構',
+      '產出 5 種格式:YT 貼文(Hook + 條列 + 結尾問題)、Thread(強 Hook + 拆解 + CTA)、Email(故事感 + 轉換導向)、Shorts 腳本(60 秒口語強節奏)、IG 貼文(高互動短文 + CTA)',
+      '分別儲存為 5 個獨立檔案於同資料夾'
+    ],
+    output: '5 個獨立檔案(.md 或 .txt):YT-post、Thread、Email、Shorts-script、IG-post。每份直接複製貼上對應平台即可發布。',
+    promptLang: 'Prompt · 一稿多平台分發',
+    prompt: `# 任務說明
+
+在這個資料夾裡,你可以找到我最近一段 YouTube 長影片的轉錄稿。
+
+根據不同平台特性改寫內容語氣與結構,分別建立以下內容:
+
+1. 一篇 YouTube 貼文(含開頭 Hook + 條列重點 + 結尾互動問題)
+2. 一個 Thread 推文(強 Hook + 分點拆解 + CTA)
+3. 一份電子郵件(具故事感與轉換導向的內容)
+4. 一個 YouTube Shorts 短影音腳本(60 秒以內,強節奏口語腳本)
+5. 一篇 Instagram 貼文(高互動型短貼文+CTA)
+
+請將這些內容分別儲存為獨立的檔案,並存放在該資料夾中。`
+  },
+  {
+    id: 'skill-gen',
+    cat: 'automation',
+    icon: '🛠️',
+    title: '自動生成 Skill',
+    desc: '把你常用的工作流程包成可重複呼叫的 Skill,以後一句話就能觸發整套自動化。',
+    scenario: 'Skill 是 Claude 的「指令封裝機制」:你把一套常用的多步驟流程(例如「整理本週信件 + 產出週報」)寫成一個 Skill,以後只要喊它的名字,Claude 就會照本走。這格的原始 Notion 條目只列了標題,完整 prompt 待補。',
+    workflow: [
+      '描述要封裝的工作流目的、輸入、輸出',
+      '請 Claude 起草 SKILL.md(含 metadata + 步驟說明)',
+      '在 ~/.claude/skills/<skill-name>/ 建立檔案',
+      '測試一次,迭代精修步驟與邊界條件',
+      '正式列入慣用 Skill 庫,以後只需呼叫 /<skill-name>'
+    ],
+    output: '一份 SKILL.md 與相關支援檔,放在 Claude 的 skills 目錄底下。日後任何對話都能直接觸發。',
+    promptLang: 'Prompt · 自動生成 Skill (原始 Notion 僅列標題)',
+    prompt: `# 任務:幫我生成一個 Skill
+
+我要把以下工作流程封裝成可重複呼叫的 Skill:
+
+[在這裡描述你的工作流:目的、輸入、預期輸出]
+
+請依下列步驟產出:
+
+1. 確認 Skill 名稱(kebab-case)、一句話說明
+2. 起草 SKILL.md,含:
+   - frontmatter (name, description, version)
+   - 觸發條件
+   - 必要工具
+   - 步驟拆解
+   - 邊界條件與失敗回退
+3. 在 ~/.claude/skills/<name>/ 建立資料夾並寫入 SKILL.md
+4. 給我一個測試指令,讓我可以立刻驗證 Skill 是否如預期
+
+—— 註:原 Notion 此卡片僅有標題,以上為基於 Skill 機制慣例的推薦範本,請依你的實際需求調整。`
+  }
+];
+
+const catLabels = {
+  productivity: '🗂️ 生產力',
+  marketing: '📣 行銷',
+  sales: '💼 業務',
+  automation: '⚙️ 自動化'
+};
+
+function renderAdvCards() {
+  const grid = document.getElementById('advGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  advancedCases.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'adv-card cat-' + c.cat;
+    card.dataset.cat = c.cat;
+    card.innerHTML = `
+      <span class="adv-cat-tag">${catLabels[c.cat] || c.cat}</span>
+      <div class="adv-ic">${c.icon}</div>
+      <h3>${c.title}</h3>
+      <p class="adv-desc">${c.desc}</p>
+      <div class="adv-meta">
+        <span>${c.workflow.length} 步驟工作流</span>
+        <span class="opn">查看細節 →</span>
+      </div>
+    `;
+    card.addEventListener('click', () => openAdvModal(c));
+    grid.appendChild(card);
+  });
+}
+
+function openAdvModal(c) {
+  const body = document.getElementById('advModalBody');
+  body.innerHTML = `
+    <button class="adv-modal-close" id="advCloseBtn" aria-label="關閉">✕</button>
+    <div class="adv-modal-head">
+      <span class="adv-cat-tag">${catLabels[c.cat] || c.cat}</span>
+      <h3 id="advModalTitle"><span class="adv-ic">${c.icon}</span> ${c.title}</h3>
+      <p class="adv-desc">${c.desc}</p>
+    </div>
+    <div class="adv-tabs" role="tablist">
+      <button class="adv-tab active" data-pane="scenario">適用情境</button>
+      <button class="adv-tab" data-pane="prompt">Prompt 全文</button>
+      <button class="adv-tab" data-pane="workflow">工作流程</button>
+      <button class="adv-tab" data-pane="output">預期產出</button>
+    </div>
+    <div class="adv-tab-pane active" data-pane="scenario">
+      <h4>適用情境</h4>
+      <p>${c.scenario}</p>
+    </div>
+    <div class="adv-tab-pane" data-pane="prompt">
+      ${codeBlock(c.promptLang, c.prompt)}
+    </div>
+    <div class="adv-tab-pane" data-pane="workflow">
+      <h4>工作流程拆解</h4>
+      <ol>${c.workflow.map(w => `<li>${w}</li>`).join('')}</ol>
+    </div>
+    <div class="adv-tab-pane" data-pane="output">
+      <h4>預期產出</h4>
+      <p>${c.output}</p>
+    </div>
+  `;
+  document.getElementById('advModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  bindCopyButtons();
+  body.querySelectorAll('.adv-tab').forEach(t => t.addEventListener('click', () => {
+    body.querySelectorAll('.adv-tab').forEach(x => x.classList.remove('active'));
+    body.querySelectorAll('.adv-tab-pane').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const pane = body.querySelector('.adv-tab-pane[data-pane="' + t.dataset.pane + '"]');
+    if (pane) pane.classList.add('active');
+  }));
+  document.getElementById('advCloseBtn').addEventListener('click', closeAdvModal);
+}
+
+function closeAdvModal() {
+  document.getElementById('advModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('advModalOverlay').addEventListener('click', closeAdvModal);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('advModal').classList.contains('open')) {
+    closeAdvModal();
+  }
+});
+
+document.querySelectorAll('.adv-chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('.adv-chip').forEach(x => x.classList.remove('active'));
+  c.classList.add('active');
+  const cat = c.dataset.cat;
+  document.querySelectorAll('.adv-card').forEach(card => {
+    card.classList.toggle('hidden', !(cat === 'all' || card.dataset.cat === cat));
+  });
+}));
+
+renderAdvCards();
+
+/* ============== FEATURES TOUR (11 主題) ============== */
+const featuresData = [
+  {
+    id: 'basics', ic: '🎛️', cat: '一 · 入門',
+    title: '基本概念與介面',
+    short: '2026 推出的桌面 AI 工作助理。介面三分頁:Chat 左、Cowork 中、Code 右。輸入框右下選模型 + Extended Thinking。',
+    body: `
+      <p><strong>定位轉變:</strong>過去的 AI 只「告訴你答案」,Cowork 真的「幫你把工作做完」 — 整理檔案、生成文件、操作瀏覽器與電腦軟體。</p>
+      <h4>前置條件</h4>
+      <ul>
+        <li>到官網下載桌面版(Windows / Mac 都支援)</li>
+        <li>至少 Claude Pro 訂閱($20/月)</li>
+      </ul>
+      <h4>介面三分頁(由左至右)</h4>
+      <div class="feat-grid2">
+        <div class="feat-mini-card"><strong>Chat · 左</strong>一般聊天,對話與發想</div>
+        <div class="feat-mini-card"><strong>Cowork · 中</strong>主角!幫你動手做事</div>
+        <div class="feat-mini-card"><strong>Code · 右</strong>工程師專用的 IDE 模式</div>
+        <div class="feat-mini-card"><strong>右下角</strong>選模型 + Extended Thinking 開關</div>
+      </div>
+      <h4>授權資料夾的兩個選項</h4>
+      <ul>
+        <li><code>Allow</code> — 單次授權,這次對話結束就失效</li>
+        <li><code>Always Allow</code> — 永久授權,下次自動可進</li>
+      </ul>
+      <h4>模型選擇(右下角下拉)</h4>
+      <ul>
+        <li><strong>Opus</strong> — 深度推理,複雜任務首選</li>
+        <li><strong>Sonnet</strong> — 兼顧效能與實用,日常推薦</li>
+        <li><strong>Haiku</strong> — 快速簡單,小任務用</li>
+      </ul>
+      <h4>Extended Thinking</h4>
+      <p>輸入框右下的延伸思考開關。脈絡複雜(多檔串接、需多輪推理)的任務開啟,Claude 會花更多時間規劃。</p>
+    `
+  },
+  {
+    id: 'documents', ic: '📄', cat: '二 · 產出',
+    title: '文件生成能力',
+    short: '把舊檔案丟進資料夾 → 變成 Claude 的先備知識庫。可直接問、產新文件、跨檔回填。',
+    body: `
+      <p>把過去資料(Word 範本、Excel 報表、PDF 講義、紙本翻拍)放進指定資料夾後,這些檔案就是 Claude 的「先備知識庫」。</p>
+      <h4>三層用法,愈用愈深</h4>
+      <ol>
+        <li><strong>直接問</strong> — 「去年的開課日期是?」Claude 翻檔回答,不需手動翻找</li>
+        <li><strong>參考範本生成</strong> — 「依去年的 Word 範本,做一份今年的課程資訊文件」,自動產出存回資料夾</li>
+        <li><strong>OCR + 跨檔回填</strong> — 紙本名冊翻拍 → Claude 視覺辨識 → 轉成 Excel + 人數統計 → 統計結果自動回填到 Word 課程文件</li>
+      </ol>
+      <div class="callout"><span class="ic">💡</span><div><strong>關鍵心法:</strong>不需要寫公式或匯入規則 — Cowork 會自動載入 .xlsx、.docx、.pptx 等內建 Skill 處理格式細節。</div></div>
+    `
+  },
+  {
+    id: 'dispatch', ic: '📱', cat: '三 · 遠端',
+    title: 'Dispatch · 手機遠端控制',
+    short: '不在電腦前也能丟任務。手機 App 配對家中桌機,出門前喊一句、回家看成果。',
+    body: `
+      <p>Dispatch 是 Cowork 的「遙控器」。把手機與桌面 App 配對後,你能在通勤、出差、開會空檔丟任務,家中電腦的 Cowork 自動執行。</p>
+      <h4>配對流程</h4>
+      <ol>
+        <li>桌面版側邊欄進 <code>Dispatch</code></li>
+        <li>跟手機 App 配對(掃 QR 或登入同帳號)</li>
+        <li>在桌機點「我已登入手機」</li>
+      </ol>
+      <h4>三項關鍵設定(缺一無法遠端跑)</h4>
+      <div class="feat-grid2">
+        <div class="feat-mini-card"><strong>① 保持電腦喚醒</strong>必須開啟,睡眠就斷線、任務中斷</div>
+        <div class="feat-mini-card"><strong>② Chrome 擴充</strong>建議安裝,讓 Claude 能操作瀏覽器</div>
+        <div class="feat-mini-card"><strong>③ Let Claude control your computer</strong>選擇性開啟。給更高權限,Claude 能透過截圖實際操作電腦</div>
+      </div>
+      <h4>典型應用</h4>
+      <ul>
+        <li>通勤途中喊:「整理今天信箱、列待回信清單」</li>
+        <li>出差遠端請家中 Cowork 開 Keynote 轉檔(見 Computer Use)</li>
+        <li>結合 Skill 完成醫院掛號等需要敏感資訊的任務</li>
+      </ul>
+    `
+  },
+  {
+    id: 'claude-md', ic: '🧠', cat: '四 · 記憶',
+    title: 'CLAUDE.md · 專案記憶文件',
+    short: 'Cowork 自動生成的特殊文件,承載專案記憶。每次進入專案 Claude 先讀它當行為準則。',
+    body: `
+      <p><strong>自動生成:</strong>在指定資料夾第一次跑任務時,Cowork 會自動建立一份 <code>CLAUDE.md</code>。這份文件就是這個工作區的「行為準則」。</p>
+      <h4>寫什麼?</h4>
+      <ul>
+        <li>用字遣詞偏好(例:全繁體中文、避免行銷詞)</li>
+        <li>學生 / 客戶個資處理方式(只用代號、不外傳)</li>
+        <li>重複出現的規範(每份文件的版頭、結尾、聯絡資訊)</li>
+        <li>禁忌(不刪檔不問、不覆蓋原始檔)</li>
+      </ul>
+      <p>寫一次,以後每個任務 Claude 自動遵守 — 不用每次重複提醒。</p>
+      <h4>進度追蹤 · 介面元素</h4>
+      <div class="feat-grid2">
+        <div class="feat-mini-card"><strong>右上角 Progress 面板</strong>顯示當前任務進度、子步驟、剩餘工作</div>
+        <div class="feat-mini-card"><strong>下方檔案區塊</strong>列出本次任務 Claude 碰過哪些檔案(讀 / 寫 / 修改)</div>
+      </div>
+      <div class="callout info"><span class="ic">📝</span><div>本網站的「六步驟設定」教學裡的第 5 步,提供完整 CLAUDE.md 範本可複製。</div></div>
+    `
+  },
+  {
+    id: 'project', ic: '📂', cat: '五 · 組織',
+    title: 'Project · 專案模式',
+    short: '長期專案的容器。建立時填 Instructions 欄位,Claude 學你的偏好,還能設排程。',
+    body: `
+      <p>適合「需要長期處理、希望 Claude 隨時切換情境」的工作 — 例如:每週課程準備、季度報告、特定客戶服務。</p>
+      <h4>建立流程</h4>
+      <ol>
+        <li>側邊欄新增 Project</li>
+        <li>填寫 <strong>Instructions(指令)欄位</strong> — 這是最關鍵欄位,寫製作規範</li>
+        <li>上傳參考檔(課程大綱、品牌指南、舊報告)</li>
+      </ol>
+      <h4>Project vs 一般任務的兩大差異</h4>
+      <div class="feat-grid2">
+        <div class="feat-mini-card"><strong>① 專屬記憶空間</strong>Claude 會學習你的工作習慣與偏好。例:你說「做簡報時提醒我提供素材」,下次做下一週簡報時它會主動詢問</div>
+        <div class="feat-mini-card"><strong>② 排程功能</strong>只有 Project 模式能設定 Scheduled 自動執行(見下一個功能)</div>
+      </div>
+    `
+  },
+  {
+    id: 'scheduled', ic: '⏰', cat: '六 · 自動',
+    title: 'Scheduled · 定時排程',
+    short: '在固定時間自動跑任務。可用面板 + 號設定,也可用白話描述。前提:Keep awake 開啟。',
+    body: `
+      <p>把週期性工作交給 Cowork。設一次,以後自動跑。</p>
+      <h4>兩種設定方式</h4>
+      <div class="feat-grid2">
+        <div class="feat-mini-card"><strong>① 進 Scheduled 面板 + 號</strong>傳統表單:選日期 / 時間 / 頻率 / 任務內容</div>
+        <div class="feat-mini-card"><strong>② 用白話描述</strong>直接打字 — 「每週一晚上 7 點,先做好當週 PPT」</div>
+      </div>
+      <h4>操作選項</h4>
+      <ul>
+        <li><strong>Run Now</strong> — 立即跑一次(不等排程時間)</li>
+        <li><strong>刪除</strong> — 停用這個排程</li>
+        <li><strong>編輯</strong> — 改時間、改任務內容</li>
+      </ul>
+      <div class="callout danger"><span class="ic">⚠️</span><div><strong>必須維持 Keep awake 開啟。</strong>電腦睡眠就無法執行 — Cowork 是跑在你本機的,App 一斷就停。出差/週末長假前記得確認。</div></div>
+    `
+  },
+  {
+    id: 'subagent', ic: '🤖', cat: '七 · 並行',
+    title: 'Subagent · 子代理並行',
+    short: '把多項任務拆給多個分身同時跑,最後彙整回報。比一般 AI Agent 串行快數倍。',
+    body: `
+      <p>一般 AI Agent 處理多項任務是「依序慢慢跑」 — 耗時又容易塞爆對話容量(context)。Cowork 用 Subagent 機制,可以把任務切給多個「分身」同時並行,跑完再彙整。</p>
+      <h4>實際範例:每日早晨情報看板</h4>
+      <ol>
+        <li>主 Claude 收到任務:「整理今天的攝影圈情報」</li>
+        <li>分派三個 Subagent:
+          <ul>
+            <li><strong>分身 A</strong>:搜相機新發表資訊</li>
+            <li><strong>分身 B</strong>:找 Photoshop 新教學</li>
+            <li><strong>分身 C</strong>:找 Lightroom 新教學</li>
+          </ul>
+        </li>
+        <li>三個分身並行跑(同時搜尋、整理)</li>
+        <li>主 Claude 彙整三份結果,生成一份「資訊看板」交付</li>
+      </ol>
+      <h4>為什麼這很重要?</h4>
+      <ul>
+        <li><strong>速度</strong>:時間從串行的 N×T,變並行的 max(T)</li>
+        <li><strong>節省 context</strong>:每個分身用自己的對話容量,不擠壓主對話</li>
+        <li><strong>適合排程</strong>:每日 / 每週固定跑的多任務工作流</li>
+      </ul>
+    `
+  },
+  {
+    id: 'connectors', ic: '🔌', cat: '八 · 整合',
+    title: 'Connectors · 外部服務連接',
+    short: '讓 Cowork 操作 Canva、Google 日曆、Gmail 等服務。授權一次,長期串接。',
+    body: `
+      <p>Connector 是 Cowork 跟外部世界的橋樑。透過 MCP(Model Context Protocol)協定,授權一次後,Claude 能讀寫該服務。</p>
+      <h4>官方影片示範的三大整合</h4>
+      <div class="feat-grid2">
+        <div class="feat-mini-card"><strong>🎨 Canva</strong>請 Claude 設計社群貼文初稿,再到 Canva 進一步編輯收尾</div>
+        <div class="feat-mini-card"><strong>📅 Google 日曆</strong>查詢未來行程、一次把 12 週課程全部新增到行事曆</div>
+        <div class="feat-mini-card"><strong>✉️ Gmail</strong>串接後寄信、讀信、整理客戶分類</div>
+      </div>
+      <h4>其他常用 Connectors</h4>
+      <p>
+        <span class="feat-tag">Slack</span>
+        <span class="feat-tag">Notion</span>
+        <span class="feat-tag">Google Drive</span>
+        <span class="feat-tag">Asana</span>
+        <span class="feat-tag">Linear</span>
+        <span class="feat-tag">GitHub</span>
+        <span class="feat-tag">Outlook</span>
+        <span class="feat-tag">Dropbox</span>
+      </p>
+      <div class="callout info"><span class="ic">🔗</span><div>本網站的「介面 Demo」區有 Slack 週摘要 + Gmail 早報的互動模擬,展示 Connector 的實際對話流程。</div></div>
+    `
+  },
+  {
+    id: 'skills', ic: '📚', cat: '九 · 可重用',
+    title: 'Skills · 技能(可重用 SOP)',
+    short: 'SOP 說明書,後台待命,需要時 Claude 才翻閱載入。比 CLAUDE.md 更省 context。',
+    body: `
+      <p>Skill 是一份「說明書 / SOP」 — 把常用的多步驟工作流封裝起來,平時躺在後台,Claude 接到相關指令才主動載入。</p>
+      <p>(先前生成簡報、編輯 Word/Excel 時,其實就自動載入了 <code>pptx</code>、<code>docx</code> 等內建 Skill。)</p>
+      <h4>三種取得方式</h4>
+      <ol>
+        <li><strong>瀏覽內建範本</strong>:點輸入框 + 號 → 瀏覽 → 看視覺排版、品牌語調規則等預設庫</li>
+        <li><strong>Skill Creator(互動建立)</strong>:安裝後,Claude 用問答式幫你客製化、測試,最後打包成 .skill 檔</li>
+        <li><strong>手動建立</strong>:直接填名稱、說明、提示詞 → Create</li>
+      </ol>
+      <h4>啟用方式</h4>
+      <ul>
+        <li>打斜線 <code>/</code> 啟用(例:<code>/welcome-email</code>)</li>
+        <li>或用自然語言讓 Claude 自動判斷該用哪個 Skill</li>
+      </ul>
+      <h4>管理</h4>
+      <p>所有技能列在 <strong>Customize 頁 → Skills</strong>,可啟用 / 停用 / 修改 / 刪除。</p>
+      <div class="callout"><span class="ic">⚡</span><div><strong>為什麼用 Skill 而非貼進 CLAUDE.md?</strong>影片用「歡迎信範本太長」的痛點說明:長範本若貼進記憶會佔用寶貴的 context 空間。Skill 是「需要才載入」,平時零成本。</div></div>
+    `
+  },
+  {
+    id: 'plugins', ic: '🧩', cat: '十 · 打包',
+    title: 'Plugins · 工具箱外掛',
+    short: '把多個 Skills + Connectors 打包成完整工具箱。Customize 頁有範本可直接 Install。',
+    body: `
+      <p>Plugin = 多個 Skills + Connectors 組合成的「完整工具箱」。如果說 Skill 是單一道具,Plugin 就是按專業領域打包的工具袋。</p>
+      <h4>實際操作</h4>
+      <ol>
+        <li>進 <strong>Customize 頁</strong></li>
+        <li>看一系列官方/社群範本(涵蓋行銷、教學、HR、開發、攝影等領域)</li>
+        <li>選你需要的點 <code>Install</code> → 整套 Skills + Connectors 一次到位</li>
+      </ol>
+      <h4>典型 Plugin 內含</h4>
+      <p>例如「攝影創作者套件」可能包含:</p>
+      <ul>
+        <li>Skill:照片視覺辨識歸檔、Lightroom 編輯指令、社群貼文範本</li>
+        <li>Connector:Google Drive、Instagram、Lightroom</li>
+        <li>預設 Project Instructions:攝影相關工作準則</li>
+      </ul>
+      <p>不用一個一個找、安裝、設定,一次到齊。</p>
+    `
+  },
+  {
+    id: 'computer-use', ic: '⚡', cat: '十一 · 進階',
+    title: '進階自動化 · 視覺辨識 / 遠端瀏覽 / Computer Use',
+    short: '結合 Skill + Dispatch + Computer Use,做到照片自動歸檔、遠端掛號、Keynote 轉檔等實戰自動化。',
+    body: `
+      <p>當 <strong>Skill + Connector + Dispatch + Computer Use</strong> 全部串起來,Cowork 變成真正的「全自動數位代理」。</p>
+      <h4>實戰案例三種</h4>
+      <div class="feat-grid2">
+        <div class="feat-mini-card"><strong>📸 資料夾整理 Skill</strong>建一個整理 Skill,Claude 用視覺辨識檢視每張照片,依主題(人像 / 靜物 / 風景)自動歸檔到對應資料夾</div>
+        <div class="feat-mini-card"><strong>🏥 遠端醫院掛號 Skill</strong>把網路掛號流程寫成 Skill(網址、醫師、身分證、生日)。透過手機 Dispatch 請家中 Cowork 自動喚醒瀏覽器完成掛號</div>
+        <div class="feat-mini-card" style="grid-column:1/-1;"><strong>🖥️ Computer Use(操作電腦軟體)</strong>設定 → 一般 → 確認「Computer Use」已開啟。<br/>示範:出差中遠端請家中 Claude 開啟 Keynote、轉成 PPT 格式、再上傳 iCloud — 化解臨時簡報危機</div>
+      </div>
+      <h4>啟用 Computer Use 的前置</h4>
+      <ul>
+        <li>到設定 → 一般 → 開啟 <code>Computer Use</code></li>
+        <li>或在 Dispatch 設定開啟 <code>Let Claude control your computer</code></li>
+        <li>Claude 會透過截圖實際看你的螢幕,並用游標操作</li>
+      </ul>
+      <div class="callout danger"><span class="ic">🔐</span><div><strong>安全提醒:</strong>Computer Use 是最高權限,等於 Claude 變成「另一個你」操作電腦。只在需要時開啟,並避免讓它執行金融、密碼相關動作。</div></div>
+    `
+  }
+];
+
+const featuresNav = document.getElementById('featuresNav');
+const featuresPanel = document.getElementById('featuresPanel');
+
+if (featuresNav && featuresPanel) {
+  featuresData.forEach((f, i) => {
+    const b = document.createElement('button');
+    b.className = 'feat-nav-item' + (i === 0 ? ' active' : '');
+    b.dataset.feat = f.id;
+    b.dataset.idx = i;
+    b.innerHTML = `
+      <div class="feat-ic">${f.ic}</div>
+      <div>
+        <div class="feat-cat">${f.cat}</div>
+        <div class="feat-title">${f.title}</div>
+      </div>
+    `;
+    b.addEventListener('click', () => activateFeature(i));
+    featuresNav.appendChild(b);
+  });
+  activateFeature(0);
+}
+
+function activateFeature(i) {
+  const f = featuresData[i];
+  if (!f) return;
+  document.querySelectorAll('.feat-nav-item').forEach(b => b.classList.toggle('active', +b.dataset.idx === i));
+  featuresPanel.innerHTML = `
+    <div class="feat-head">
+      <div class="feat-big-ic">${f.ic}</div>
+      <div>
+        <div class="feat-meta-pill">${f.cat}</div>
+        <h3>${f.title}</h3>
+        <p class="feat-short">${f.short}</p>
+      </div>
+    </div>
+    <div class="feat-body">${f.body}</div>
+    <div class="feat-nav-foot">
+      ${i > 0 ? `<button class="btn btn--ghost" onclick="activateFeature(${i - 1})">← ${featuresData[i - 1].title}</button>` : '<span></span>'}
+      ${i < featuresData.length - 1 ? `<button class="btn btn--primary" onclick="activateFeature(${i + 1})">${featuresData[i + 1].title} →</button>` : '<a class="btn btn--primary" href="#demo">看實際 Demo →</a>'}
+    </div>
+  `;
+  // scroll panel into view on mobile when clicking nav
+  if (window.innerWidth <= 880) featuresPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+window.activateFeature = activateFeature;
+
+// Pillar cards → click jumps to features and activates the right one
+document.querySelectorAll('.pillar-card').forEach(p => {
+  p.addEventListener('click', e => {
+    const target = p.dataset.feature;
+    if (!target) return;
+    const idx = featuresData.findIndex(f => f.id === target);
+    if (idx >= 0) {
+      setTimeout(() => activateFeature(idx), 600);
+    }
+  });
+});
+
+/* ============== Smooth anchor offset ============== */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (href.length < 2) return;
+    const el = document.querySelector(href);
+    if (!el) return;
+    e.preventDefault();
+    const top = el.getBoundingClientRect().top + window.scrollY - parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) - 16;
+    window.scrollTo({ top, behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
